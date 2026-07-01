@@ -18,7 +18,7 @@ export function EducationSection() {
         <div className="mt-16 space-y-5">
           {education.map((item, index) => (
             <FadeIn key={item.id} delay={index * 0.06}>
-              <Card className="p-6 md:p-8">
+              <Card padding="lg">
                 <div className="flex flex-wrap items-start justify-between gap-4">
                   <div>
                     <h3 className="text-xl font-semibold">

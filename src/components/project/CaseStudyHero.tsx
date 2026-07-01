@@ -4,7 +4,7 @@ import { FadeIn } from "@/components/animations/FadeIn";
 import { Badge } from "@/components/common/Badge";
 import { Container } from "@/components/layout/Container";
 import { ButtonLink } from "@/components/ui/Button";
-import { getProjectBadgeLabel, getProjectDemo, getProjectGithub } from "@/utils/projects";
+import { getProjectBadgeIntent, getProjectDemo, getProjectGithub } from "@/utils/projects";
 import type { Project } from "@/types";
 import { cn } from "@/utils/cn";
 
@@ -46,16 +46,18 @@ export function CaseStudyHero({ project }: CaseStudyHeroProps) {
 
         <FadeIn delay={0.08}>
           <div className="mt-8 flex flex-wrap gap-2">
+            {project.featured && <Badge intent="featured" />}
             {project.badges?.map((badge) => (
-              <Badge key={badge}>{getProjectBadgeLabel(badge)}</Badge>
+              <Badge key={badge} intent={getProjectBadgeIntent(badge)} />
             ))}
+            {project.status === "in-progress" && <Badge intent="ongoing" />}
             <Badge>{project.year}</Badge>
-            <Badge variant="cyan">{project.category}</Badge>
+            <Badge intent="default">{project.category}</Badge>
           </div>
         </FadeIn>
 
         <FadeIn delay={0.12}>
-          <h1 className="mt-6 max-w-5xl text-balance text-4xl font-semibold tracking-tight md:text-6xl">
+          <h1 className="type-display mt-6 max-w-5xl text-balance">
             {project.title}
           </h1>
           <p className="mt-5 max-w-3xl text-lg text-text-secondary md:text-xl">
@@ -66,14 +68,24 @@ export function CaseStudyHero({ project }: CaseStudyHeroProps) {
         <FadeIn delay={0.18}>
           <div className="mt-8 flex flex-wrap gap-3">
             {github && (
-              <ButtonLink href={github} variant="secondary" target="_blank" rel="noreferrer">
-                <Github className="size-4" aria-hidden />
+              <ButtonLink
+                href={github}
+                variant="secondary"
+                icon={Github}
+                target="_blank"
+                rel="noreferrer"
+              >
                 GitHub
               </ButtonLink>
             )}
             {demo && (
-              <ButtonLink href={demo} target="_blank" rel="noreferrer">
-                <ExternalLink className="size-4" aria-hidden />
+              <ButtonLink
+                href={demo}
+                icon={ExternalLink}
+                iconPosition="right"
+                target="_blank"
+                rel="noreferrer"
+              >
                 Live Demo
               </ButtonLink>
             )}

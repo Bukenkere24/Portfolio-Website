@@ -1,19 +1,31 @@
+import { badgeLabels, getTechBadgeIntent, type BadgeIntent } from "@/constants/badges";
+import { Badge } from "@/components/common/Badge";
 import { cn } from "@/utils/cn";
 
 interface TechBadgeProps {
   label: string;
+  intent?: BadgeIntent;
   className?: string;
 }
 
-export function TechBadge({ label, className }: TechBadgeProps) {
+const semanticIntents: BadgeIntent[] = ["ai", "ml", "enterprise"];
+
+export function TechBadge({ label, intent, className }: TechBadgeProps) {
+  const resolvedIntent = intent ?? getTechBadgeIntent(label);
+  const displayLabel = semanticIntents.includes(resolvedIntent)
+    ? badgeLabels[resolvedIntent]
+    : label;
+
   return (
-    <span
+    <Badge
+      intent={resolvedIntent}
       className={cn(
-        "rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 font-mono text-sm text-text-secondary",
+        !semanticIntents.includes(resolvedIntent) &&
+          "normal-case tracking-normal text-xs",
         className,
       )}
     >
-      {label}
-    </span>
+      {displayLabel}
+    </Badge>
   );
 }

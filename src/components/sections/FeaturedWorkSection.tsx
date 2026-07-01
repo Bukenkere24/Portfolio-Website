@@ -16,7 +16,7 @@ export function FeaturedWorkSection() {
           subtitle="A collection of software systems, AI applications, enterprise automation, and client solutions built to solve real-world problems."
         />
 
-        <StaggerGroup className="mt-16 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <StaggerGroup className="mt-16 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
           {featuredProjects.map((project) => (
             <StaggerItem key={project.id}>
               <ProjectCard project={project} />

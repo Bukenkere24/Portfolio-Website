@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Skeleton } from "@/components/common/Skeleton";
 import { cn } from "@/utils/cn";
 import { getImageFallbackLabel, isValidImageSrc } from "@/utils/images";
 
@@ -8,6 +9,7 @@ interface SafeImageProps {
   className?: string;
   placeholder?: string;
   loading?: "lazy" | "eager";
+  rounded?: boolean;
 }
 
 export function SafeImage({
@@ -16,8 +18,10 @@ export function SafeImage({
   className,
   placeholder,
   loading = "lazy",
+  rounded = true,
 }: SafeImageProps) {
   const [hasError, setHasError] = useState(false);
+  const [isLoading, setIsLoading] = useState(isValidImageSrc(src));
   const showFallback = !isValidImageSrc(src) || hasError;
 
   if (showFallback) {
@@ -25,6 +29,7 @@ export function SafeImage({
       <div
         className={cn(
           "grid h-full w-full place-items-center bg-[radial-gradient(circle_at_50%_20%,rgba(37,99,235,0.18),rgba(7,9,15,0.95))] p-6 text-center",
+          rounded && "rounded-image",
           className,
         )}
         role="img"
@@ -43,12 +48,26 @@ export function SafeImage({
   }
 
   return (
-    <img
-      src={src}
-      alt={alt}
-      loading={loading}
-      className={cn("h-full w-full object-cover", className)}
-      onError={() => setHasError(true)}
-    />
+    <div className={cn("relative h-full w-full overflow-hidden", rounded && "rounded-image")}>
+      {isLoading && (
+        <Skeleton className="absolute inset-0 rounded-image" aria-hidden />
+      )}
+      <img
+        src={src}
+        alt={alt}
+        loading={loading}
+        decoding="async"
+        className={cn(
+          "h-full w-full object-cover transition-opacity duration-300",
+          isLoading ? "opacity-0" : "opacity-100",
+          className,
+        )}
+        onLoad={() => setIsLoading(false)}
+        onError={() => {
+          setHasError(true);
+          setIsLoading(false);
+        }}
+      />
+    </div>
   );
 }

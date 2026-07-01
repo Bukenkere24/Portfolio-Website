@@ -1,5 +1,6 @@
 import { FadeIn } from "@/components/animations/FadeIn";
 import { Card } from "@/components/common/Card";
+import { ResponsiveGrid } from "@/components/common/ResponsiveGrid";
 import { SectionHeading } from "@/components/common/SectionHeading";
 import { Container } from "@/components/layout/Container";
 import { certifications } from "@/data";
@@ -14,10 +15,10 @@ export function CertificationsSection() {
           subtitle="Certifications and structured learning that support project work and engineering growth."
         />
 
-        <div className="mt-16 grid gap-5 md:grid-cols-2">
+        <ResponsiveGrid columns="2" className="mt-16">
           {certifications.map((item, index) => (
             <FadeIn key={item.id} delay={index * 0.06}>
-              <Card className="p-6">
+              <Card padding="md">
                 <p className="font-mono text-xs uppercase tracking-[0.2em] text-cyan">
                   {item.date}
                 </p>
@@ -36,7 +37,7 @@ export function CertificationsSection() {
               </Card>
             </FadeIn>
           ))}
-        </div>
+        </ResponsiveGrid>
       </Container>
     </section>
   );

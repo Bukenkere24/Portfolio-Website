@@ -1,3 +1,4 @@
+export type { BadgeIntent } from "@/constants/badges";
 export type {
   Project,
   ProjectAccent,

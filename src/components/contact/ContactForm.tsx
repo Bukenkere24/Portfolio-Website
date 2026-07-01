@@ -77,20 +77,6 @@ function FloatingField({
   );
 }
 
-function FormSkeleton() {
-  return (
-    <div className="space-y-4" aria-hidden>
-      {Array.from({ length: 3 }).map((_, index) => (
-        <div
-          key={index}
-          className="h-16 animate-pulse rounded-2xl border border-white/5 bg-white/[0.04]"
-        />
-      ))}
-      <div className="h-11 w-40 animate-pulse rounded-button bg-white/[0.06]" />
-    </div>
-  );
-}
-
 export function ContactForm() {
   const reduceMotion = useReducedMotion();
   const [status, setStatus] = useState<FormStatus>("idle");
@@ -133,10 +119,6 @@ export function ContactForm() {
               Thanks for reaching out. I will get back to you soon.
             </p>
           </motion.div>
-        ) : status === "loading" ? (
-          <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <FormSkeleton />
-          </motion.div>
         ) : (
           <motion.form
             key="form"
@@ -146,30 +128,38 @@ export function ContactForm() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <FloatingField
-              id="contact-name"
-              label="Name"
-              value={fields.name}
-              onChange={(name) => setFields((current) => ({ ...current, name }))}
-            />
-            <FloatingField
-              id="contact-email"
-              label="Email"
-              type="email"
-              value={fields.email}
-              onChange={(email) => setFields((current) => ({ ...current, email }))}
-            />
-            <FloatingField
-              id="contact-message"
-              label="Message"
-              value={fields.message}
-              onChange={(message) => setFields((current) => ({ ...current, message }))}
-              multiline
-            />
-            <Button type="submit" size="lg" data-cursor-hover>
-              <Send className="size-4" aria-hidden />
-              Send message
-            </Button>
+            <fieldset disabled={status === "loading"} className="space-y-4 border-0 p-0">
+              <FloatingField
+                id="contact-name"
+                label="Name"
+                value={fields.name}
+                onChange={(name) => setFields((current) => ({ ...current, name }))}
+              />
+              <FloatingField
+                id="contact-email"
+                label="Email"
+                type="email"
+                value={fields.email}
+                onChange={(email) => setFields((current) => ({ ...current, email }))}
+              />
+              <FloatingField
+                id="contact-message"
+                label="Message"
+                value={fields.message}
+                onChange={(message) => setFields((current) => ({ ...current, message }))}
+                multiline
+              />
+              <Button
+                type="submit"
+                size="lg"
+                loading={status === "loading"}
+                disabled={status === "loading"}
+                icon={Send}
+                data-cursor-hover
+              >
+                Send message
+              </Button>
+            </fieldset>
           </motion.form>
         )}
       </AnimatePresence>

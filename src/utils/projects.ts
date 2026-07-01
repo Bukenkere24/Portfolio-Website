@@ -1,4 +1,6 @@
 import { projects } from "@/data/projects";
+import { badgeLabels, projectBadgeToIntent } from "@/constants/badges";
+import type { BadgeIntent } from "@/constants/badges";
 import type { Project, ProjectBadge } from "@/types";
 
 export function getFeaturedProjects(): Project[] {
@@ -23,13 +25,10 @@ export function hasProjectLinks(project: Project) {
   return Boolean(getProjectGithub(project) || getProjectDemo(project));
 }
 
-const badgeLabels: Record<ProjectBadge, string> = {
-  "currently-building": "Currently Building",
-  "client-project": "Real Client Project",
-  "hackathon-winner": "Hackathon Winner",
-  "anveshan-sponsorship": "Anveshan Sponsorship",
-};
+export function getProjectBadgeIntent(badge: ProjectBadge): BadgeIntent {
+  return projectBadgeToIntent[badge];
+}
 
 export function getProjectBadgeLabel(badge: ProjectBadge): string {
-  return badgeLabels[badge];
+  return badgeLabels[projectBadgeToIntent[badge]];
 }

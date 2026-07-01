@@ -1,4 +1,5 @@
 import { cva, type VariantProps } from "class-variance-authority";
+import { Loader2, type LucideIcon } from "lucide-react";
 import { motion, type HTMLMotionProps } from "framer-motion";
 import { buttonMotion } from "@/constants/motion";
 import { cn } from "@/utils/cn";
@@ -9,9 +10,9 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          "bg-accent text-white hover:bg-accent/90 shadow-[0_0_0_1px_rgba(37,99,235,0.5)] hover:shadow-[0_8px_30px_rgba(37,99,235,0.35)]",
+          "bg-accent text-white hover:bg-accent/90 shadow-[0_0_0_1px_rgba(37,99,235,0.5)] hover:shadow-[var(--shadow-button-primary)]",
         secondary:
-          "bg-surface text-text-primary border border-white/10 hover:border-white/20 hover:bg-surface-secondary hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)]",
+          "bg-surface text-text-primary border border-white/10 hover:border-white/20 hover:bg-surface-secondary hover:shadow-[var(--shadow-button-secondary)]",
         ghost:
           "text-text-secondary hover:text-text-primary hover:bg-white/5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)]",
       },
@@ -30,24 +31,80 @@ const buttonVariants = cva(
 
 type ButtonVariants = VariantProps<typeof buttonVariants>;
 
-export type ButtonProps = HTMLMotionProps<"button"> & ButtonVariants;
-export type ButtonLinkProps = HTMLMotionProps<"a"> & ButtonVariants;
+type SharedButtonProps = ButtonVariants & {
+  loading?: boolean;
+  icon?: LucideIcon;
+  iconPosition?: "left" | "right";
+};
+
+export type ButtonProps = Omit<HTMLMotionProps<"button">, "children"> &
+  SharedButtonProps & {
+    children?: React.ReactNode;
+  };
+
+export type ButtonLinkProps = Omit<HTMLMotionProps<"a">, "children"> &
+  SharedButtonProps & {
+    children?: React.ReactNode;
+  };
+
+function ButtonContent({
+  children,
+  loading,
+  icon: Icon,
+  iconPosition = "left",
+}: {
+  children?: React.ReactNode;
+  loading?: boolean;
+  icon?: LucideIcon;
+  iconPosition?: "left" | "right";
+}) {
+  const iconElement = loading ? (
+    <Loader2 className="size-4 animate-spin" aria-hidden />
+  ) : Icon ? (
+    <Icon className="size-4" aria-hidden />
+  ) : null;
+
+  return (
+    <>
+      {iconPosition === "left" && iconElement}
+      {children}
+      {iconPosition === "right" && iconElement}
+    </>
+  );
+}
 
 export function Button({
   className,
   variant,
   size,
+  loading = false,
+  disabled,
+  icon,
+  iconPosition,
+  children,
   ...props
 }: ButtonProps) {
+  const isDisabled = disabled || loading;
+
   return (
     <motion.button
       className={cn(buttonVariants({ variant, size }), className)}
-      whileHover={buttonMotion.hover}
-      whileTap={buttonMotion.tap}
+      whileHover={isDisabled ? undefined : buttonMotion.hover}
+      whileTap={isDisabled ? undefined : buttonMotion.tap}
       transition={buttonMotion.transition}
-      data-cursor-hover
+      disabled={isDisabled}
+      aria-busy={loading}
+      data-cursor-hover={!isDisabled ? true : undefined}
       {...props}
-    />
+    >
+      <ButtonContent
+        loading={loading}
+        icon={icon}
+        iconPosition={iconPosition}
+      >
+        {children}
+      </ButtonContent>
+    </motion.button>
   );
 }
 
@@ -55,16 +112,35 @@ export function ButtonLink({
   className,
   variant,
   size,
+  loading = false,
+  icon,
+  iconPosition,
+  children,
   ...props
 }: ButtonLinkProps) {
   return (
     <motion.a
-      className={cn(buttonVariants({ variant, size }), className)}
-      whileHover={buttonMotion.hover}
-      whileTap={buttonMotion.tap}
+      className={cn(
+        buttonVariants({ variant, size }),
+        loading && "pointer-events-none opacity-70",
+        className,
+      )}
+      whileHover={loading ? undefined : buttonMotion.hover}
+      whileTap={loading ? undefined : buttonMotion.tap}
       transition={buttonMotion.transition}
+      aria-busy={loading}
       data-cursor-hover
       {...props}
-    />
+    >
+      <ButtonContent
+        loading={loading}
+        icon={icon}
+        iconPosition={iconPosition}
+      >
+        {children}
+      </ButtonContent>
+    </motion.a>
   );
 }
+
+export { buttonVariants };

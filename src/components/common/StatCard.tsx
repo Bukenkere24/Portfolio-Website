@@ -10,7 +10,7 @@ interface StatCardProps {
 
 export function StatCard({ label, value, className }: StatCardProps) {
   return (
-    <Card className={cn("p-4 backdrop-blur-sm", className)}>
+    <Card padding="sm" className={cn("backdrop-blur-sm", className)}>
       <dt className="text-sm text-text-secondary">{label}</dt>
       <dd className="mt-2 font-heading text-2xl font-semibold">{value}</dd>
     </Card>

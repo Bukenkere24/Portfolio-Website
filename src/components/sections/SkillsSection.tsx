@@ -1,4 +1,6 @@
 import { FadeIn } from "@/components/animations/FadeIn";
+import { Card } from "@/components/common/Card";
+import { ResponsiveGrid } from "@/components/common/ResponsiveGrid";
 import { SectionHeading } from "@/components/common/SectionHeading";
 import { TechBadge } from "@/components/common/TechBadge";
 import { Container } from "@/components/layout/Container";
@@ -31,25 +33,25 @@ export function SkillsSection() {
           subtitle="A practical stack shaped by projects, internships, and continuous learning."
         />
 
-        <div className="mt-16 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <ResponsiveGrid className="mt-16 gap-6">
           {categories.map((category, index) => {
             const items = skills.filter((skill) => skill.category === category);
             if (items.length === 0) return null;
 
             return (
               <FadeIn key={category} delay={index * 0.05}>
-                <div className="rounded-card border border-white/10 bg-white/[0.035] p-6">
+                <Card padding="md">
                   <h3 className="text-lg font-semibold">{categoryLabels[category]}</h3>
                   <div className="mt-4 flex flex-wrap gap-2">
                     {items.map((skill) => (
                       <TechBadge key={skill.name} label={skill.name} />
                     ))}
                   </div>
-                </div>
+                </Card>
               </FadeIn>
             );
           })}
-        </div>
+        </ResponsiveGrid>
       </Container>
     </section>
   );
