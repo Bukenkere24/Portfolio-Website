@@ -1,8 +1,12 @@
 import { FadeIn } from "@/components/animations/FadeIn";
+import { SafeImage } from "@/components/common/SafeImage";
 import { Container } from "@/components/layout/Container";
 import { aboutStory } from "@/data";
+import { isValidImageSrc } from "@/utils/images";
 
 export function AboutSection() {
+  const hasPortrait = isValidImageSrc(aboutStory.portraitSrc);
+
   return (
     <section id="about" className="relative overflow-hidden py-24 md:py-32">
       <div
@@ -15,19 +19,21 @@ export function AboutSection() {
             <div className="relative mx-auto max-w-md">
               <div className="absolute inset-8 rounded-image bg-cyan/10 blur-3xl" />
               <div className="relative overflow-hidden rounded-image border border-white/10 bg-white/[0.04] p-6 shadow-[0_24px_90px_rgba(0,0,0,0.35)] backdrop-blur-xl">
-                <div className="aspect-[4/5] rounded-[22px] border border-white/10 bg-[radial-gradient(circle_at_50%_20%,rgba(248,250,252,0.16),rgba(17,24,39,0.72)_42%,rgba(7,9,15,0.96))] p-8">
-                  <div className="flex h-full flex-col justify-between">
-                    <p className="font-mono text-xs uppercase tracking-[0.28em] text-cyan">
-                      Bengaluru
-                    </p>
-                    <div>
-                      <p className="font-heading text-6xl font-semibold">AGB</p>
-                      <p className="mt-3 max-w-xs text-sm text-text-secondary">
-                        Traditional portrait placeholder. Add the final edited
-                        photo asset in a later content pass.
+                <div className="aspect-[4/5] overflow-hidden rounded-[22px] border border-white/10 bg-[radial-gradient(circle_at_50%_20%,rgba(248,250,252,0.16),rgba(17,24,39,0.72)_42%,rgba(7,9,15,0.96))]">
+                  {hasPortrait ? (
+                    <SafeImage
+                      src={aboutStory.portraitSrc}
+                      alt={aboutStory.portraitAlt}
+                      className="h-full w-full object-cover object-[center_20%]"
+                    />
+                  ) : (
+                    <div className="flex h-full flex-col justify-between p-8">
+                      <p className="font-mono text-xs uppercase tracking-[0.28em] text-cyan">
+                        {aboutStory.location}
                       </p>
+                      <p className="font-heading text-6xl font-semibold">{aboutStory.monogram}</p>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -55,7 +61,7 @@ export function AboutSection() {
             <FadeIn delay={0.25}>
               <figure className="mt-10 rounded-card border border-white/10 bg-white/[0.04] p-6 backdrop-blur-md">
                 <figcaption className="mb-3 font-heading text-xl font-semibold">
-                  My Engineering Philosophy
+                  {aboutStory.philosophyTitle}
                 </figcaption>
                 <blockquote className="text-lg text-text-secondary">
                   &quot;{aboutStory.philosophy}&quot;

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FileText, Github, Linkedin, Moon, Sun } from "lucide-react";
 import { Container } from "./Container";
+import { MobileNav } from "./MobileNav";
 import { heroSequence, motionEase } from "@/constants/motion";
 import { usePageMotion } from "@/context/PageMotionContext";
 import { useActiveSection } from "@/hooks/useActiveSection";
@@ -9,13 +10,14 @@ import { useScrollProgress } from "@/hooks/useScrollProgress";
 import { useTheme } from "@/hooks/useTheme";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { socials } from "@/data";
+import { isValidExternalUrl } from "@/utils/links";
 import { cn } from "@/utils/cn";
 
 const navItems = [
   { label: "Home", href: "#home", id: "home" },
   { label: "About", href: "#about", id: "about" },
+  { label: "Journey", href: "#journey", id: "journey" },
   { label: "Work", href: "#work", id: "work" },
-  { label: "Experience", href: "#experience", id: "experience" },
   { label: "Skills", href: "#skills", id: "skills" },
   { label: "Contact", href: "#contact", id: "contact" },
 ] as const;
@@ -95,6 +97,7 @@ export function Navbar() {
                         "group relative rounded-full px-3 py-2 transition-colors hover:text-text-primary",
                         activeSection === item.id && "text-text-primary",
                       )}
+                      aria-current={activeSection === item.id ? "true" : undefined}
                       data-cursor-hover
                     >
                       {item.label}
@@ -113,6 +116,7 @@ export function Navbar() {
             </nav>
 
             <div className="flex items-center gap-1">
+              <MobileNav items={navItems} activeSection={activeSection} />
               {socials.map((social) => {
                 if (
                   social.icon !== "github" &&
@@ -122,16 +126,34 @@ export function Navbar() {
                   return null;
                 }
 
+                const href = social.href;
+                if (!href.startsWith("/") && !isValidExternalUrl(href)) {
+                  return null;
+                }
+
                 const Icon = socialIcons[social.icon];
 
                 return (
                   <a
                     key={social.id}
-                    href={social.href}
+                    href={href}
                     className="grid size-9 place-items-center rounded-full text-text-secondary transition-colors hover:bg-white/5 hover:text-text-primary"
                     aria-label={social.label}
-                    target={social.href.startsWith("http") ? "_blank" : undefined}
-                    rel={social.href.startsWith("http") ? "noreferrer" : undefined}
+                    target={
+                      isValidExternalUrl(href) && href.startsWith("http")
+                        ? "_blank"
+                        : undefined
+                    }
+                    rel={
+                      isValidExternalUrl(href) && href.startsWith("http")
+                        ? "noreferrer"
+                        : undefined
+                    }
+                    download={
+                      social.id === "resume" && href.endsWith(".pdf")
+                        ? "Avaneesh-GB-Resume.pdf"
+                        : undefined
+                    }
                     data-cursor-hover
                   >
                     <Icon className="size-4" aria-hidden />

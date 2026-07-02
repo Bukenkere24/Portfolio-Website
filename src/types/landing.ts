@@ -13,6 +13,11 @@ export interface AboutStory {
   subtitle: string;
   paragraphs: string[];
   philosophy: string;
+  philosophyTitle: string;
+  location: string;
+  portraitSrc?: string;
+  portraitAlt: string;
+  monogram: string;
 }
 
 export interface JourneyStage {
@@ -39,4 +44,18 @@ export interface CoreValue {
 export interface TechnologyFocus {
   title: string;
   description: string;
+}
+
+export interface HeroContent {
+  headline: string;
+  subheadline: string;
+  monogram: string;
+  tagline: string;
+  portraitSrc?: string;
+  portraitAlt: string;
+  ctas: {
+    primary: { label: string; href: string };
+    secondary: { label: string; href: string };
+    tertiary: { label: string; href: string };
+  };
 }

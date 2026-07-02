@@ -10,6 +10,7 @@ export {
   aboutStory,
   coreValues,
   currentBuild,
+  heroContent,
   heroRoles,
   heroStats,
   journeyStages,

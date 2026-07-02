@@ -51,11 +51,10 @@ export function StaggerItem({
         reduceMotion
           ? undefined
           : {
-              hidden: { opacity: 0, y: 30, filter: "blur(8px)" },
+              hidden: { opacity: 0, y: 30 },
               visible: {
                 opacity: 1,
                 y: 0,
-                filter: "blur(0px)",
                 transition: { duration: 0.65, ease: [0.25, 0.1, 0.25, 1] },
               },
             }

@@ -48,13 +48,33 @@ export const aboutStory: AboutStory = {
   ],
   philosophy:
     "I enjoy building software that solves practical problems. Whether it's automating enterprise workflows, designing intelligent AI systems, or creating tools that simplify complex processes, I enjoy transforming ideas into reliable software that people can actually use.",
+  philosophyTitle: "My Engineering Philosophy",
+  location: "Bengaluru",
+  portraitSrc: "/images/me/portrait-about.png",
+  portraitAlt: "Avaneesh G B",
+  monogram: "AGB",
 };
+
+export const heroContent = {
+  headline: "Engineering intelligent systems that solve real-world problems.",
+  subheadline:
+    "Computer Science Engineering student passionate about Artificial Intelligence, Backend Engineering, Enterprise Automation, and building scalable software with real-world impact.",
+  monogram: "AGB",
+  tagline: "systems / ai / backend",
+  portraitSrc: "/images/me/portrait-hero.png",
+  portraitAlt: "Avaneesh G B",
+  ctas: {
+    primary: { label: "View Engineering Work", href: "#work" },
+    secondary: { label: "Download Resume", href: "/resume.pdf" },
+    tertiary: { label: "Let's Connect", href: "#contact" },
+  },
+} as const;
 
 export const journeyStages: JourneyStage[] = [
   {
     id: "started-engineering",
     title: "Started Engineering",
-    year: "2022",
+    year: "2023",
     description:
       "Began Computer Science Engineering with a focus on fundamentals, curiosity, and disciplined technical growth.",
     icon: GraduationCap,
@@ -119,7 +139,8 @@ export const journeyStages: JourneyStage[] = [
 
 export const currentBuild: CurrentBuild = {
   title: "Legal AI Bot",
-  subtitle: "AI-powered legal research and document intelligence platform.",
+  subtitle:
+    "JSS Academy major project — RAG-powered legal research, clause analysis, and explainable document intelligence.",
   status: "In Active Development",
   roadmap: ["Research", "Architecture", "Backend", "Frontend", "Deployment"],
 };

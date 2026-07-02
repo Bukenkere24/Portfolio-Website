@@ -2,6 +2,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { Loader2, type LucideIcon } from "lucide-react";
 import { motion, type HTMLMotionProps } from "framer-motion";
 import { buttonMotion } from "@/constants/motion";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { cn } from "@/utils/cn";
 
 const buttonVariants = cva(
@@ -84,13 +85,14 @@ export function Button({
   children,
   ...props
 }: ButtonProps) {
+  const reduceMotion = useReducedMotion();
   const isDisabled = disabled || loading;
 
   return (
     <motion.button
       className={cn(buttonVariants({ variant, size }), className)}
-      whileHover={isDisabled ? undefined : buttonMotion.hover}
-      whileTap={isDisabled ? undefined : buttonMotion.tap}
+      whileHover={isDisabled || reduceMotion ? undefined : buttonMotion.hover}
+      whileTap={isDisabled || reduceMotion ? undefined : buttonMotion.tap}
       transition={buttonMotion.transition}
       disabled={isDisabled}
       aria-busy={loading}
@@ -118,6 +120,8 @@ export function ButtonLink({
   children,
   ...props
 }: ButtonLinkProps) {
+  const reduceMotion = useReducedMotion();
+
   return (
     <motion.a
       className={cn(
@@ -125,8 +129,8 @@ export function ButtonLink({
         loading && "pointer-events-none opacity-70",
         className,
       )}
-      whileHover={loading ? undefined : buttonMotion.hover}
-      whileTap={loading ? undefined : buttonMotion.tap}
+      whileHover={loading || reduceMotion ? undefined : buttonMotion.hover}
+      whileTap={loading || reduceMotion ? undefined : buttonMotion.tap}
       transition={buttonMotion.transition}
       aria-busy={loading}
       data-cursor-hover

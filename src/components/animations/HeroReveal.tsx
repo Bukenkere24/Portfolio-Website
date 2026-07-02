@@ -15,15 +15,11 @@ export function HeroReveal({ children, step }: HeroRevealProps) {
 
   return (
     <motion.div
-      initial={
-        reduceMotion
-          ? false
-          : { opacity: 0, y: sectionReveal.y, filter: `blur(${sectionReveal.blur}px)` }
-      }
+      initial={reduceMotion ? false : { opacity: 0, y: sectionReveal.y }}
       animate={
         isReady || reduceMotion
-          ? { opacity: 1, y: 0, filter: "blur(0px)" }
-          : { opacity: 0, y: sectionReveal.y, filter: `blur(${sectionReveal.blur}px)` }
+          ? { opacity: 1, y: 0 }
+          : { opacity: 0, y: sectionReveal.y }
       }
       transition={{
         duration: reduceMotion ? 0 : sectionReveal.duration,

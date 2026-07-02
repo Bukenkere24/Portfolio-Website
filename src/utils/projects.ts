@@ -2,6 +2,7 @@ import { projects } from "@/data/projects";
 import { badgeLabels, projectBadgeToIntent } from "@/constants/badges";
 import type { BadgeIntent } from "@/constants/badges";
 import type { Project, ProjectBadge } from "@/types";
+import { isValidExternalUrl } from "@/utils/links";
 
 export function getFeaturedProjects(): Project[] {
   return [...projects]
@@ -14,11 +15,13 @@ export function getProjectBySlug(slug: string): Project | undefined {
 }
 
 export function getProjectGithub(project: Project) {
-  return project.github?.trim() || undefined;
+  const url = project.github?.trim();
+  return isValidExternalUrl(url) && url.startsWith("http") ? url : undefined;
 }
 
 export function getProjectDemo(project: Project) {
-  return project.demo?.trim() || undefined;
+  const url = project.demo?.trim();
+  return isValidExternalUrl(url) && url.startsWith("http") ? url : undefined;
 }
 
 export function hasProjectLinks(project: Project) {

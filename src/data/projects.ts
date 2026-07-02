@@ -8,14 +8,27 @@ const galleryPlaceholder = (label: string, caption: string, id: string) => ({
   placeholder: label,
 });
 
+const galleryImage = (
+  folder: string,
+  filename: string,
+  alt: string,
+  caption: string,
+  id: string,
+) => ({
+  id,
+  src: `/images/projects/${folder}/${filename}`,
+  alt,
+  caption,
+});
+
 const projectRecords: ProjectRecord[] = [
   {
     id: "docdb-etl",
     slug: "docdb-etl-platform",
     title: "DocDB ETL Platform",
-    subtitle: "Document ingestion, validation, and metadata extraction pipeline",
+    subtitle: "DocDB ETL Helper — document ingestion, chunking, validation, and API payloads",
     description:
-      "Backend ETL platform for ingesting documents, validating structure, chunking content, and serving structured API responses.",
+      "Backend ETL platform and developer playground for ingesting documents, validating records, chunking content, and serving structured API responses for RAG workflows.",
     tags: ["Backend", "ETL", "API", "Python"],
     featured: true,
     featuredOrder: 1,
@@ -25,11 +38,11 @@ const projectRecords: ProjectRecord[] = [
     links: { github: "https://github.com/" },
     caseStudy: {
       executiveSummary:
-        "DocDB is a backend-first ETL system designed to ingest heterogeneous documents, validate them reliably, extract metadata, and expose clean API responses for downstream applications.",
+        "DocDB ETL Helper is a backend-first document pipeline that converts raw records into chunked payloads with metadata, summaries, and embeddings-ready output for downstream AI applications such as legal document retrieval.",
       problemStatement:
-        "Unstructured document pipelines often fail silently: inconsistent formats, poor chunking, missing metadata, and brittle API contracts make document intelligence hard to trust in production.",
+        "Unstructured document pipelines often fail silently: malformed records, inconsistent chunking, missing metadata, and brittle API contracts make document intelligence hard to trust in production.",
       solution:
-        "Built a modular ingestion pipeline with explicit validation stages, configurable chunking, metadata extraction, and predictable API response schemas so consumers receive consistent, queryable document data.",
+        "Built a modular ingestion pipeline with explicit validation stages, configurable chunking strategies (fixed, recursive, overlap windows), metadata extraction, and predictable API response schemas tested through a DocDB ETL Helper playground.",
       architecture: {
         title: "ETL Pipeline Architecture",
         description:
@@ -51,13 +64,13 @@ const projectRecords: ProjectRecord[] = [
         ],
       },
       features: [
-        "Multi-format document ingestion",
-        "Validation gates before processing",
-        "Configurable chunking strategies",
-        "Metadata extraction and normalization",
-        "Structured API responses for downstream apps",
+        "Multi-format document ingestion with JSON test cases",
+        "Validation gates that reject malformed records with clear 400 responses",
+        "Configurable chunking strategies with token limits and overlap",
+        "Metadata extraction, doc summaries, and embeddings-ready output",
+        "Structured API responses for downstream RAG applications",
       ],
-      technologyStack: ["Python", "FastAPI", "PostgreSQL", "Docker", "Pydantic"],
+      technologyStack: ["Python", "FastAPI", "PostgreSQL", "Docker", "Pydantic", "JSON Schema"],
       engineeringDecisions: [
         {
           title: "Validation before transformation",
@@ -76,13 +89,43 @@ const projectRecords: ProjectRecord[] = [
         },
       ],
       gallery: [
-        galleryPlaceholder("Pipeline Dashboard", "ETL pipeline overview with stage status indicators.", "docdb-1"),
-        galleryPlaceholder("Validation Logs", "Validation output showing rejected and accepted document batches.", "docdb-2"),
-        galleryPlaceholder("API Response", "Structured API payload with extracted metadata and chunks.", "docdb-3"),
+        galleryImage(
+          "docdb",
+          "single-short-doc.png",
+          "DocDB ETL Helper processing a single short document",
+          "Single-document run showing chunked output, doc summaries, and embeddings-ready extraction.",
+          "docdb-1",
+        ),
+        galleryImage(
+          "docdb",
+          "chunking-pipeline.png",
+          "DocDB chunking pipeline with token limits and overlap",
+          "Multi-document chunking with max_tokens, overlap, and strategy configuration.",
+          "docdb-2",
+        ),
+        galleryImage(
+          "docdb",
+          "html-chunking.png",
+          "Recursive HTML document chunking output",
+          "Recursive chunking strategy applied to HTML documents with per-chunk metadata.",
+          "docdb-3",
+        ),
+        galleryImage(
+          "docdb",
+          "malformed-record.png",
+          "Malformed record validation in DocDB ETL Helper",
+          "Validation layer rejecting malformed input with an explicit error and status code.",
+          "docdb-4",
+        ),
       ],
       debugging: [
-        galleryPlaceholder("Chunking Debug", "Debugging inconsistent chunk boundaries across PDF sections.", "docdb-d1"),
-        galleryPlaceholder("Metadata Trace", "Tracing missing metadata fields through extraction stages.", "docdb-d2"),
+        galleryImage(
+          "docdb",
+          "malformed-record.png",
+          "Debugging malformed document validation",
+          "Test case confirming invalid document types are caught at index 0 before chunking runs.",
+          "docdb-d1",
+        ),
       ],
       results: {
         summary:
@@ -292,14 +335,14 @@ const projectRecords: ProjectRecord[] = [
     year: 2024,
     status: "completed",
     accent: "success",
-    links: { live: "https://example.com", github: "https://github.com/" },
+    links: { github: "https://github.com/" },
     caseStudy: {
       executiveSummary:
-        "A real client project for Vega Physiotherapy, delivered through the Anveshan sponsorship collaboration with a focus on trust, clarity, and conversion-friendly web design.",
+        "A real client website for Vega Physiotherapy & Rehabilitation in Banashankari, Bangalore — built through the Anveshan sponsorship collaboration with ACSM-validated performance positioning, academy program pages, and conversion-focused healthcare UI.",
       problemStatement:
-        "The client needed a professional online presence that explained services clearly, built patient trust, and worked reliably across devices.",
+        "The clinic needed a professional online presence that explained evidence-based physiotherapy services, introduced specialists, and supported academy enquiries with trust-oriented design across devices.",
       solution:
-        "Designed and built a responsive website with structured service pages, strong visual hierarchy, and a polished brand experience suitable for a healthcare client.",
+        "Designed and built a responsive React website with a strong homepage hero, clinic mission and team pages, and a detailed academy workflow section covering ACSM performance testing components and enquiry pathways.",
       architecture: {
         title: "Client Website Architecture",
         description:
@@ -317,11 +360,11 @@ const projectRecords: ProjectRecord[] = [
         ],
       },
       features: [
-        "Responsive service-focused layout",
-        "Client branding and trust-oriented design",
-        "Contact and appointment pathways",
-        "Performance-conscious frontend structure",
-        "Delivered as a real client engagement",
+        "Evidence-based physiotherapy homepage with performance tracking UI",
+        "Clinic mission page with specialist profiles and trust metrics",
+        "Academy program page with step-by-step testing workflow",
+        "WhatsApp and booking call-to-action pathways",
+        "Responsive healthcare branding with teal design system",
       ],
       technologyStack: ["React", "TypeScript", "Tailwind CSS", "Vite", "Vercel"],
       engineeringDecisions: [
@@ -337,12 +380,36 @@ const projectRecords: ProjectRecord[] = [
         },
       ],
       gallery: [
-        galleryPlaceholder("Homepage", "Vega Physiotherapy homepage hero and service overview.", "vega-1"),
-        galleryPlaceholder("Services Page", "Structured presentation of physiotherapy services.", "vega-2"),
-        galleryPlaceholder("Mobile View", "Responsive layout optimized for patient browsing on mobile.", "vega-3"),
+        galleryImage(
+          "vega",
+          "homepage-hero.png",
+          "Vega Physiotherapy homepage hero section",
+          "Homepage with evidence-based physiotherapy messaging, performance tracking card, and booking CTAs.",
+          "vega-1",
+        ),
+        galleryImage(
+          "vega",
+          "about-page.png",
+          "Vega Physiotherapy about and specialists page",
+          "Clinic mission, ACSM validation highlights, and specialist profiles for the Banashankari practice.",
+          "vega-2",
+        ),
+        galleryImage(
+          "vega",
+          "academy-page.png",
+          "Vega academy program and testing workflow page",
+          "Academy enquiry page with five-component ACSM testing workflow and feature breakdown.",
+          "vega-3",
+        ),
       ],
       debugging: [
-        galleryPlaceholder("Layout QA", "Cross-device spacing and typography adjustments during client review.", "vega-d1"),
+        galleryImage(
+          "vega",
+          "about-page.png",
+          "Client review of layout and specialist content hierarchy",
+          "Iterated on spacing, stat cards, and specialist presentation during client feedback cycles.",
+          "vega-d1",
+        ),
       ],
       results: {
         summary:
@@ -380,11 +447,11 @@ const projectRecords: ProjectRecord[] = [
     links: { github: "https://github.com/" },
     caseStudy: {
       executiveSummary:
-        "A healthcare AI project using hybrid ensemble learning to improve disease prediction while emphasizing interpretability through feature importance and rigorous evaluation.",
+        "A JSS Academy major-project healthcare AI system using hybrid ensemble learning across 41 disease classes, with cross-validation stability analysis, feature importance, and confusion-matrix evaluation.",
       problemStatement:
-        "Single-model healthcare predictors can be brittle, and black-box predictions are difficult to trust without evaluation transparency and feature-level insight.",
+        "Single-model healthcare predictors can be brittle on symptom-based datasets, and black-box predictions are difficult to trust without evaluation transparency and feature-level insight.",
       solution:
-        "Combined multiple models into a hybrid ensemble, evaluated performance with robust metrics, and analyzed feature importance to make predictions more explainable.",
+        "Combined multiple learners into a hybrid ensemble, compared stability against SVM and Random Forest baselines across five cross-validation folds, and analyzed symptom feature importance with confusion-matrix validation.",
       architecture: {
         title: "Hybrid Ensemble Pipeline",
         description:
@@ -404,13 +471,21 @@ const projectRecords: ProjectRecord[] = [
         ],
       },
       features: [
-        "Hybrid ensemble model design",
-        "Evaluation with accuracy, precision, recall, and F1",
-        "Feature importance visualization",
-        "Healthcare-oriented dataset handling",
-        "Model comparison across base learners",
+        "Hybrid ensemble model design across 41 diagnosis classes",
+        "Five-fold cross-validation with accuracy stability charts",
+        "Baseline comparison against SVM and Random Forest",
+        "Top-10 symptom feature importance visualization",
+        "Confusion-matrix evaluation of ensemble predictions",
       ],
-      technologyStack: ["Python", "Scikit-learn", "Pandas", "NumPy", "Matplotlib"],
+      technologyStack: [
+        "Python",
+        "Scikit-learn",
+        "Pandas",
+        "NumPy",
+        "Matplotlib",
+        "Seaborn",
+        "Jupyter",
+      ],
       engineeringDecisions: [
         {
           title: "Ensemble over single-model reliance",
@@ -424,19 +499,51 @@ const projectRecords: ProjectRecord[] = [
         },
       ],
       gallery: [
-        galleryPlaceholder("Evaluation Metrics", "Model performance comparison across ensemble configurations.", "disease-1"),
-        galleryPlaceholder("Feature Importance", "Visualization of the most influential health indicators.", "disease-2"),
+        galleryImage(
+          "disease",
+          "hybrid-model-stability.png",
+          "Hybrid ensemble cross-validation accuracy stability",
+          "Proposed hybrid model maintaining perfect accuracy stability across all five folds versus an SVM baseline dip at fold 2.",
+          "disease-1",
+        ),
+        galleryImage(
+          "disease",
+          "random-forest-baseline.png",
+          "Random Forest baseline cross-validation accuracy",
+          "Random Forest baseline accuracy per fold compared against the hybrid ensemble approach.",
+          "disease-2",
+        ),
+        galleryImage(
+          "disease",
+          "feature-importance.png",
+          "Top 10 symptom feature importance chart",
+          "Relative importance scores for symptom indicators including muscle pain, itching, and high fever.",
+          "disease-3",
+        ),
+        galleryImage(
+          "disease",
+          "confusion-matrix.png",
+          "Hybrid ensemble confusion matrix heatmap",
+          "41-class confusion matrix showing near-perfect diagonal classification with minimal misclassification.",
+          "disease-4",
+        ),
       ],
       debugging: [
-        galleryPlaceholder("Class Imbalance", "Adjusting preprocessing after detecting skewed label distribution.", "disease-d1"),
+        galleryImage(
+          "disease",
+          "hybrid-model-stability.png",
+          "Comparing ensemble stability to SVM baseline",
+          "Used fold-level accuracy charts to confirm the hybrid model removed the instability seen in the SVM baseline.",
+          "disease-d1",
+        ),
       ],
       results: {
         summary:
-          "The ensemble approach outperformed individual models and provided a more defensible healthcare AI analysis workflow.",
+          "The hybrid ensemble achieved consistent cross-validation accuracy across all folds, outperformed the SVM baseline on stability, and produced interpretable symptom-level feature rankings.",
         metrics: [
-          { label: "Ensemble Accuracy", value: 91, suffix: "%" },
-          { label: "F1 Score", value: 0.89 },
-          { label: "Base Models Combined", value: 4 },
+          { label: "CV Folds", value: 5 },
+          { label: "Disease Classes", value: 41 },
+          { label: "Hybrid CV Accuracy", value: 100, suffix: "%" },
         ],
       },
       lessonsLearned: [
@@ -454,9 +561,9 @@ const projectRecords: ProjectRecord[] = [
     id: "cv-shapes",
     slug: "computer-vision-shape-classification",
     title: "Computer Vision Shape Classification",
-    subtitle: "Preprocessing, morphology, chain-code extraction, and feature engineering",
+    subtitle: "BCS613B — chain-code histograms, morphology, and min-distance classification",
     description:
-      "Computer vision pipeline for shape classification using preprocessing, morphology, chain-code features, and engineered descriptors.",
+      "Classical computer vision pipeline for disk, square, and triangle classification using morphology, chain-code features, and minimum-distance matching.",
     tags: ["Computer Vision", "OpenCV", "Classification", "Python"],
     featured: true,
     featuredOrder: 6,
@@ -466,11 +573,11 @@ const projectRecords: ProjectRecord[] = [
     links: { github: "https://github.com/" },
     caseStudy: {
       executiveSummary:
-        "A classical computer vision project focused on shape classification through careful preprocessing, morphology operations, chain-code extraction, and handcrafted feature engineering.",
+        "A BCS613B computer vision project that classifies disk, square, and triangle shapes using morphology operations, 8-direction chain codes, histogram features, roundness metrics, and minimum-distance matching — achieving 100% test accuracy.",
       problemStatement:
-        "Raw image inputs are noisy and inconsistent; shape classification becomes unreliable without disciplined preprocessing and meaningful feature extraction.",
+        "Noisy binary shape images make contour extraction unreliable; classification fails without disciplined preprocessing and interpretable shape descriptors.",
       solution:
-        "Built a CV pipeline that cleans input images, extracts structural shape descriptors, and classifies shapes using engineered features rather than treating pixels alone as sufficient signal.",
+        "Built a stage-wise pipeline from binary input through morphology open/close, outline extraction, chain-code histogram features, and closest-class averaging for disk, square, and triangle recognition.",
       architecture: {
         title: "Vision Processing Pipeline",
         description:
@@ -510,19 +617,44 @@ const projectRecords: ProjectRecord[] = [
         },
       ],
       gallery: [
-        galleryPlaceholder("Preprocessing Stages", "Original, thresholded, and cleaned shape masks.", "cv-1"),
-        galleryPlaceholder("Chain Code Output", "Extracted contour representation for shape analysis.", "cv-2"),
+        galleryImage(
+          "cv",
+          "pipeline-flowchart.png",
+          "Shape classification pipeline flowchart",
+          "End-to-end flow from binary image input through morphology, chain code, features, and class matching.",
+          "cv-1",
+        ),
+        galleryImage(
+          "cv",
+          "preprocessing-filters.png",
+          "Image preprocessing filter comparison",
+          "Comparing noisy input against histogram equalization, median 5x5 filtering, and Gaussian smoothing.",
+          "cv-2",
+        ),
+        galleryImage(
+          "cv",
+          "classification-results.png",
+          "Chain-code histogram classification results",
+          "Training samples and test predictions showing 100% disk classification with chain-code histogram + min-distance.",
+          "cv-3",
+        ),
       ],
       debugging: [
-        galleryPlaceholder("Morphology Tuning", "Testing kernel sizes to reduce contour breakage.", "cv-d1"),
+        galleryImage(
+          "cv",
+          "preprocessing-filters.png",
+          "Selecting median filtering for salt-and-pepper noise removal",
+          "Compared preprocessing outputs to choose median filtering over Gaussian blur for cleaner contour extraction.",
+          "cv-d1",
+        ),
       ],
       results: {
         summary:
-          "Achieved reliable shape classification by investing in preprocessing quality and interpretable feature design.",
+          "The chain-code histogram + minimum-distance classifier achieved 100% test accuracy after morphology-based preprocessing and feature extraction.",
         metrics: [
-          { label: "Classification Accuracy", value: 93, suffix: "%" },
-          { label: "Shape Classes", value: 6 },
-          { label: "Pipeline Stages", value: 5 },
+          { label: "Test Accuracy", value: 100, suffix: "%" },
+          { label: "Shape Classes", value: 3 },
+          { label: "Pipeline Stages", value: 6 },
         ],
       },
       lessonsLearned: [
@@ -540,10 +672,10 @@ const projectRecords: ProjectRecord[] = [
     id: "legal-ai",
     slug: "legal-ai-bot",
     title: "Legal AI Bot",
-    subtitle: "RAG-powered legal research and document intelligence platform",
+    subtitle: "Major project — intelligent legal research and document analysis with RAG",
     description:
-      "Currently building an AI legal research platform with RAG, Legal-BERT, semantic retrieval, and explainable AI principles.",
-    tags: ["AI", "RAG", "Legal Tech", "NLP"],
+      "JSS Academy major project building an AI legal platform with RAG, Legal-BERT, clause risk analysis, and explainable citation-based responses.",
+    tags: ["AI", "RAG", "Legal Tech", "NLP", "Major Project"],
     badges: ["currently-building"],
     featured: true,
     featuredOrder: 7,
@@ -553,37 +685,50 @@ const projectRecords: ProjectRecord[] = [
     links: { github: "https://github.com/" },
     caseStudy: {
       executiveSummary:
-        "An in-progress legal AI platform focused on research acceleration, document intelligence, and explainable retrieval over legal knowledge bases.",
+        "Legal AI Bot is a JSS Academy of Technical Education major project that combines NLP, Retrieval-Augmented Generation, and domain-specific transformer models to help users analyze legal documents, retrieve relevant case law, and receive explainable, citation-backed legal insights.",
       problemStatement:
-        "Legal research is time-consuming and document-heavy, while many AI tools provide answers without transparent sourcing or domain-aware retrieval.",
+        "Access to affordable legal guidance remains limited. Contracts and policies are complex for non-experts, manual legal research is slow, and many AI tools lack contextual understanding, multilingual support, or transparent sourcing.",
       solution:
-        "Designing a RAG-based system with Legal-BERT embeddings, semantic retrieval, and explainable response generation for legal document workflows.",
+        "Designing a web-based legal intelligence platform with document processing, Legal-BERT embeddings stored in FAISS/Chroma, RAG-based question answering, NLP clause and risk analysis, confidence scoring, and a React + FastAPI architecture backed by PostgreSQL and Docker deployment.",
       architecture: {
         title: "Legal RAG Architecture",
         description:
           "Documents are embedded, indexed, retrieved semantically, and passed to a grounded response layer.",
         nodes: [
-          { id: "docs", label: "Legal Docs" },
-          { id: "embed", label: "Legal-BERT" },
-          { id: "index", label: "Vector Index" },
-          { id: "retrieve", label: "Semantic Retrieval" },
-          { id: "answer", label: "Grounded Response" },
+          { id: "docs", label: "Legal Docs", description: "Upload & preprocessing" },
+          { id: "embed", label: "Legal-BERT", description: "Domain embeddings" },
+          { id: "index", label: "Vector Index", description: "FAISS / Chroma" },
+          { id: "retrieve", label: "RAG Retrieval", description: "Semantic search" },
+          { id: "analyze", label: "Clause Analysis", description: "Risk & obligations" },
+          { id: "answer", label: "Grounded Response", description: "Citations + confidence" },
         ],
         edges: [
           { from: "docs", to: "embed" },
           { from: "embed", to: "index" },
           { from: "index", to: "retrieve" },
-          { from: "retrieve", to: "answer" },
+          { from: "retrieve", to: "analyze" },
+          { from: "analyze", to: "answer" },
         ],
       },
       features: [
-        "Retrieval-augmented generation (RAG)",
-        "Legal-BERT semantic embeddings",
-        "Explainable source-backed answers",
-        "Document intelligence workflows",
-        "Roadmap-driven active development",
+        "Document processing module for legal text structuring",
+        "Retrieval-Augmented Generation with FAISS/Chroma vector storage",
+        "Legal-BERT embeddings for domain-specific understanding",
+        "NLP-based clause and risk analysis for obligations and liabilities",
+        "Explainable citation-based responses with confidence scoring",
+        "React.js frontend with FastAPI backend and PostgreSQL storage",
       ],
-      technologyStack: ["Python", "FastAPI", "Legal-BERT", "Vector DB", "React", "RAG"],
+      technologyStack: [
+        "Python",
+        "FastAPI",
+        "React",
+        "Legal-BERT",
+        "LangChain",
+        "FAISS",
+        "Chroma",
+        "PostgreSQL",
+        "Docker",
+      ],
       engineeringDecisions: [
         {
           title: "Domain-specific embeddings",
@@ -595,31 +740,62 @@ const projectRecords: ProjectRecord[] = [
           description:
             "Designed the system to cite retrieved passages so users can verify AI output against source material.",
         },
+        {
+          title: "Document pipeline before generation",
+          description:
+            "Separated document ingestion, chunking, and metadata extraction (DocDB ETL patterns) from the RAG response layer to keep retrieval grounded.",
+        },
       ],
       gallery: [
-        galleryPlaceholder("Research UI", "Legal research interface with source-backed responses.", "legal-1"),
-        galleryPlaceholder("Retrieval View", "Semantic retrieval results with ranked document passages.", "legal-2"),
+        galleryImage(
+          "legal",
+          "slide-asset-5.png",
+          "Legal AI Bot major project title slide",
+          "JSS Academy major project presentation: Legal AI Bot for legal research and document analysis.",
+          "legal-1",
+        ),
+        galleryImage(
+          "legal",
+          "slide-asset-7.png",
+          "Legal AI Bot system architecture overview",
+          "Major project architecture and module overview from the academic presentation.",
+          "legal-2",
+        ),
+        galleryImage(
+          "legal",
+          "slide-asset-8.jpg",
+          "Legal AI Bot methodology and workflow diagram",
+          "Methodology slide covering legal datasets, preprocessing, RAG, and evaluation criteria.",
+          "legal-3",
+        ),
       ],
       debugging: [
-        galleryPlaceholder("Embedding QA", "Testing retrieval quality across legal document clusters.", "legal-d1"),
+        galleryImage(
+          "legal",
+          "slide-asset-4.png",
+          "Legal AI Bot novelty and technical requirements",
+          "Novelty matrix outlining RAG legal intelligence, contract risk analysis, and explainable outputs.",
+          "legal-d1",
+        ),
       ],
       results: {
         summary:
-          "The project is actively evolving from research and architecture into backend and frontend implementation.",
+          "The major project defines a complete legal AI architecture spanning document ingestion, semantic retrieval, clause analysis, and explainable response generation, with active implementation underway.",
         metrics: [
+          { label: "Team Members", value: 4 },
+          { label: "Core Modules", value: 6 },
           { label: "Roadmap Stages", value: 5 },
-          { label: "Retrieval Prototypes", value: 3 },
-          { label: "Architecture Iterations", value: 4 },
         ],
       },
       lessonsLearned: [
         "Legal AI needs retrieval transparency as much as answer fluency.",
         "Domain-specific embeddings materially affect research relevance.",
+        "Document ingestion quality directly affects RAG answer reliability.",
       ],
       futureImprovements: [
-        "Complete frontend research experience",
-        "Add citation confidence scoring",
-        "Expand document ingestion for case law datasets",
+        "Complete frontend research and document upload experience",
+        "Integrate court databases and expanded case law corpora",
+        "Add predictive legal analytics and enhanced multilingual support",
       ],
     },
   },

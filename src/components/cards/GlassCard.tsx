@@ -2,6 +2,7 @@ import { type ReactNode } from "react";
 import { motion } from "framer-motion";
 import { cardPadding } from "@/constants/design";
 import { cardMotion } from "@/constants/motion";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { cn } from "@/utils/cn";
 
 type CardPadding = keyof typeof cardPadding;
@@ -19,6 +20,7 @@ export function GlassCard({
   hover = false,
   padding = "md",
 }: GlassCardProps) {
+  const reduceMotion = useReducedMotion();
   const baseClassName = cn(
     "rounded-card border border-white/10 bg-white/[0.035] shadow-[var(--shadow-card)] backdrop-blur-md",
     cardPadding[padding],
@@ -34,7 +36,7 @@ export function GlassCard({
   return (
     <motion.div
       className={baseClassName}
-      whileHover={cardMotion.hover}
+      whileHover={reduceMotion ? undefined : cardMotion.hover}
       transition={cardMotion.transition}
       data-cursor-hover
     >

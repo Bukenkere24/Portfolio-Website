@@ -1,5 +1,6 @@
 import { type ReactNode } from "react";
 import { useLenis } from "@/hooks/useLenis";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 interface SmoothScrollProps {
   children: ReactNode;
@@ -7,6 +8,7 @@ interface SmoothScrollProps {
 }
 
 export function SmoothScroll({ children, enabled = true }: SmoothScrollProps) {
-  useLenis({ enabled });
+  const reduceMotion = useReducedMotion();
+  useLenis({ enabled: enabled && !reduceMotion });
   return <>{children}</>;
 }

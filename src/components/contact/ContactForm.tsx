@@ -1,10 +1,11 @@
 import { useState, type FormEvent } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { CheckCircle2, Send } from "lucide-react";
+import { AlertCircle, CheckCircle2, Send } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { site } from "@/constants/site";
 import { cn } from "@/utils/cn";
 
-type FormStatus = "idle" | "loading" | "success";
+type FormStatus = "idle" | "loading" | "success" | "error";
 
 interface FormFields {
   name: string;
@@ -80,6 +81,7 @@ function FloatingField({
 export function ContactForm() {
   const reduceMotion = useReducedMotion();
   const [status, setStatus] = useState<FormStatus>("idle");
+  const [errorMessage, setErrorMessage] = useState("");
   const [fields, setFields] = useState<FormFields>({
     name: "",
     email: "",
@@ -89,10 +91,49 @@ export function ContactForm() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setStatus("loading");
-    await new Promise((resolve) => window.setTimeout(resolve, 1200));
-    setStatus("success");
-    setFields({ name: "", email: "", message: "" });
-    window.setTimeout(() => setStatus("idle"), 3200);
+    setErrorMessage("");
+
+    const endpoint = import.meta.env.VITE_CONTACT_FORM_ENDPOINT;
+
+    try {
+      if (endpoint) {
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            name: fields.name,
+            email: fields.email,
+            message: fields.message,
+            _subject: `Portfolio contact from ${fields.name}`,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Unable to send your message right now.");
+        }
+      } else {
+        const mailto = `mailto:${site.email}?subject=${encodeURIComponent(
+          `Portfolio contact from ${fields.name}`,
+        )}&body=${encodeURIComponent(
+          `From: ${fields.name} (${fields.email})\n\n${fields.message}`,
+        )}`;
+        window.location.href = mailto;
+      }
+
+      setStatus("success");
+      setFields({ name: "", email: "", message: "" });
+      window.setTimeout(() => setStatus("idle"), 3200);
+    } catch (error) {
+      setStatus("error");
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Please try again or email directly.",
+      );
+    }
   }
 
   return (
@@ -149,6 +190,12 @@ export function ContactForm() {
                 onChange={(message) => setFields((current) => ({ ...current, message }))}
                 multiline
               />
+              {status === "error" && (
+                <p className="flex items-center gap-2 text-sm text-red-400" role="alert">
+                  <AlertCircle className="size-4 shrink-0" aria-hidden />
+                  {errorMessage}
+                </p>
+              )}
               <Button
                 type="submit"
                 size="lg"

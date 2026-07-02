@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { AnimatedCounter } from "@/components/animations/AnimatedCounter";
 import { StatCard } from "@/components/common/StatCard";
+import { SafeImage } from "@/components/common/SafeImage";
 import { HeroReveal } from "@/components/animations/HeroReveal";
 import { Container } from "@/components/layout/Container";
 import { ButtonLink } from "@/components/ui/Button";
 import { useIsMobile } from "@/hooks/useMediaQuery";
-import { heroRoles, heroStats } from "@/data";
+import { heroContent, heroRoles, heroStats } from "@/data";
+import { isValidImageSrc } from "@/utils/images";
 import { ArrowDown, ArrowRight, Download, MessageCircle } from "lucide-react";
 
 function useTypingWords(words: readonly string[]) {
@@ -56,6 +58,7 @@ export function HeroSection() {
   const reduceMotion = useReducedMotion();
   const isMobile = useIsMobile();
   const particleCount = isMobile ? 6 : 14;
+  const hasPortrait = isValidImageSrc(heroContent.portraitSrc);
 
   useEffect(() => {
     const onScroll = () => setShowScrollIndicator(window.scrollY < 80);
@@ -145,7 +148,7 @@ export function HeroSection() {
       </div>
 
       <Container className="relative grid gap-12 py-32 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
-        <div>
+        <div className="order-2 lg:order-1">
           <HeroReveal step="typing">
             <p className="mb-5 inline-flex rounded-full border border-cyan/20 bg-cyan/10 px-4 py-2 font-mono text-sm text-cyan">
               <span className="min-w-[18rem]">
@@ -157,30 +160,33 @@ export function HeroSection() {
 
           <HeroReveal step="headline">
             <h1 className="max-w-4xl text-balance text-5xl font-semibold tracking-tight md:text-6xl lg:text-7xl">
-              Engineering intelligent systems that solve real-world problems.
+              {heroContent.headline}
             </h1>
           </HeroReveal>
 
           <HeroReveal step="subheadline">
             <p className="mt-7 max-w-2xl text-lg text-text-secondary md:text-xl">
-              Computer Science Engineering student passionate about Artificial
-              Intelligence, Backend Engineering, Enterprise Automation, and
-              building scalable software with real-world impact.
+              {heroContent.subheadline}
             </p>
           </HeroReveal>
 
           <HeroReveal step="cta">
             <div className="mt-10 flex flex-wrap items-center gap-4">
-              <ButtonLink href="#work" size="lg">
-                View Engineering Work
+              <ButtonLink href={heroContent.ctas.primary.href} size="lg">
+                {heroContent.ctas.primary.label}
                 <ArrowRight className="size-4" aria-hidden />
               </ButtonLink>
-              <ButtonLink href="/resume.pdf" variant="secondary" size="lg">
-                Download Resume
+              <ButtonLink
+                href={heroContent.ctas.secondary.href}
+                variant="secondary"
+                size="lg"
+                download="Avaneesh-GB-Resume.pdf"
+              >
+                {heroContent.ctas.secondary.label}
                 <Download className="size-4" aria-hidden />
               </ButtonLink>
-              <ButtonLink href="#contact" variant="ghost" size="lg">
-                Let&apos;s Connect
+              <ButtonLink href={heroContent.ctas.tertiary.href} variant="ghost" size="lg">
+                {heroContent.ctas.tertiary.label}
                 <MessageCircle className="size-4" aria-hidden />
               </ButtonLink>
             </div>
@@ -207,7 +213,7 @@ export function HeroSection() {
 
         <HeroReveal step="portrait">
           <motion.div
-            className="relative mx-auto aspect-square w-full max-w-[28rem]"
+            className="relative order-1 mx-auto aspect-square w-full max-w-[28rem] lg:order-2"
             animate={
               reduceMotion || isMobile
                 ? undefined
@@ -225,17 +231,24 @@ export function HeroSection() {
               }
               transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
             />
-            <div className="relative grid size-full place-items-center rounded-full border border-white/10 bg-white/[0.04] p-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_30px_120px_rgba(0,0,0,0.35)] backdrop-blur-xl">
-              <div className="grid size-full place-items-center rounded-full border border-white/10 bg-[radial-gradient(circle_at_50%_15%,rgba(248,250,252,0.14),rgba(17,24,39,0.72)_48%,rgba(7,9,15,0.95))]">
-                <div className="text-center">
-                  <p className="font-heading text-7xl font-semibold tracking-tight text-text-primary md:text-8xl">
-                    AGB
-                  </p>
-                  <p className="mt-3 font-mono text-sm text-cyan">
-                    systems / ai / backend
-                  </p>
+            <div className="relative size-full overflow-hidden rounded-full border border-white/10 bg-white/[0.04] p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_30px_120px_rgba(0,0,0,0.35)] backdrop-blur-xl">
+              {hasPortrait ? (
+                <SafeImage
+                  src={heroContent.portraitSrc}
+                  alt={heroContent.portraitAlt}
+                  className="size-full rounded-full object-cover object-top"
+                  loading="eager"
+                />
+              ) : (
+                <div className="grid size-full place-items-center rounded-full border border-white/10 bg-[radial-gradient(circle_at_50%_15%,rgba(248,250,252,0.14),rgba(17,24,39,0.72)_48%,rgba(7,9,15,0.95))]">
+                  <div className="text-center">
+                    <p className="font-heading text-7xl font-semibold tracking-tight text-text-primary md:text-8xl">
+                      {heroContent.monogram}
+                    </p>
+                    <p className="mt-3 font-mono text-sm text-cyan">{heroContent.tagline}</p>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </motion.div>
         </HeroReveal>

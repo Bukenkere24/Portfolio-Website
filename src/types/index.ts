@@ -23,6 +23,7 @@ export type {
   AboutStory,
   CoreValue,
   CurrentBuild,
+  HeroContent,
   HeroStat,
   JourneyStage,
   TechnologyFocus,

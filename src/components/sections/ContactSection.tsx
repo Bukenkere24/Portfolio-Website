@@ -31,8 +31,12 @@ export function ContactSection() {
                   Email directly
                 </ButtonLink>
                 {resume && (
-                  <ButtonLink href={resume.href} variant="ghost">
-                    View Resume
+                  <ButtonLink
+                    href={resume.href}
+                    variant="ghost"
+                    download={resume.href.endsWith(".pdf") ? "Avaneesh-GB-Resume.pdf" : undefined}
+                  >
+                    Download Resume
                   </ButtonLink>
                 )}
               </div>

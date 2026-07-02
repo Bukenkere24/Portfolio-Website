@@ -23,9 +23,9 @@ export function FadeIn({
       initial={
         reduceMotion
           ? false
-          : { opacity: 0, y, filter: `blur(${sectionReveal.blur}px)` }
+          : { opacity: 0, y }
       }
-      whileInView={reduceMotion ? undefined : { opacity: 1, y: 0, filter: "blur(0px)" }}
+      whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: reduceMotion ? 0 : duration, delay, ease: motionEase }}
       {...props}

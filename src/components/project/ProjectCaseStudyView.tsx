@@ -6,6 +6,7 @@ import { ProjectMetrics } from "@/components/project/ProjectMetrics";
 import { Container } from "@/components/layout/Container";
 import { Card } from "@/components/common/Card";
 import { TechBadge } from "@/components/common/TechBadge";
+import { ProjectLinksFooter } from "@/components/project/ProjectLinksFooter";
 import type { Project } from "@/types";
 
 interface ProjectCaseStudyViewProps {
@@ -116,6 +117,8 @@ export function ProjectCaseStudyView({ project }: ProjectCaseStudyViewProps) {
             ))}
           </ul>
         </CaseStudySection>
+
+        <ProjectLinksFooter project={project} />
       </Container>
     </>
   );
