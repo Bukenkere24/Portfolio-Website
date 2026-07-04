@@ -7,4 +7,6 @@ export interface Experience {
   endDate: string | null;
   description: string[];
   technologies: string[];
+  logo?: string;
+  logoClassName?: string;
 }
