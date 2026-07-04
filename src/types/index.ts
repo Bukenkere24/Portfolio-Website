@@ -7,6 +7,7 @@ export type {
   ProjectMetric,
   ProjectResults,
   ProjectScreenshot,
+  ProjectDemoVideo,
   ProjectStatus,
   EngineeringDecision,
   ArchitectureNode,

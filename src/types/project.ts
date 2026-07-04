@@ -15,6 +15,12 @@ export interface ProjectScreenshot {
   placeholder?: string;
 }
 
+export interface ProjectDemoVideo {
+  src: string;
+  alt: string;
+  caption: string;
+}
+
 export interface ProjectMetric {
   label: string;
   value: number;
@@ -78,5 +84,6 @@ export interface Project {
   executiveSummary?: string;
   engineeringDecisions?: EngineeringDecision[];
   debuggingScreenshots?: ProjectScreenshot[];
+  demoVideo?: ProjectDemoVideo;
   results?: ProjectResults;
 }

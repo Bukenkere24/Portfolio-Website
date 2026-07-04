@@ -236,7 +236,7 @@ export function HeroSection() {
                 <SafeImage
                   src={heroContent.portraitSrc}
                   alt={heroContent.portraitAlt}
-                  className="size-full rounded-full object-cover object-top"
+                  className="size-full rounded-full object-cover object-center"
                   loading="eager"
                 />
               ) : (

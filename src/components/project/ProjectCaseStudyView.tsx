@@ -2,6 +2,7 @@ import { CaseStudyHero } from "@/components/project/CaseStudyHero";
 import { CaseStudySection } from "@/components/project/CaseStudySection";
 import { ArchitectureDiagram } from "@/components/project/ArchitectureDiagram";
 import { ProjectGallery } from "@/components/project/ProjectGallery";
+import { ProjectDemoVideo } from "@/components/project/ProjectDemoVideo";
 import { ProjectMetrics } from "@/components/project/ProjectMetrics";
 import { Container } from "@/components/layout/Container";
 import { Card } from "@/components/common/Card";
@@ -76,9 +77,17 @@ export function ProjectCaseStudyView({ project }: ProjectCaseStudyViewProps) {
           </CaseStudySection>
         )}
 
-        <CaseStudySection title="Gallery" delay={0.28}>
-          <ProjectGallery items={project.screenshots} title="Project gallery" />
-        </CaseStudySection>
+        {project.demoVideo && (
+          <CaseStudySection title="Agent Demo" delay={0.26}>
+            <ProjectDemoVideo video={project.demoVideo} />
+          </CaseStudySection>
+        )}
+
+        {project.screenshots.length > 0 && (
+          <CaseStudySection title="Gallery" delay={0.28}>
+            <ProjectGallery items={project.screenshots} title="Project gallery" />
+          </CaseStudySection>
+        )}
 
         {project.debuggingScreenshots && project.debuggingScreenshots.length > 0 && (
           <CaseStudySection title="Debugging and Validation" delay={0.32}>

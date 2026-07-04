@@ -2,6 +2,7 @@ import type {
   Project,
   ProjectArchitecture,
   ProjectScreenshot,
+  ProjectDemoVideo,
   ProjectResults,
   EngineeringDecision,
   ProjectBadge,
@@ -38,6 +39,7 @@ export interface ProjectRecord {
     engineeringDecisions: EngineeringDecision[];
     gallery: ProjectScreenshot[];
     debugging: ProjectScreenshot[];
+    demoVideo?: ProjectDemoVideo;
     results: ProjectResults;
     lessonsLearned: string[];
     futureImprovements: string[];
@@ -74,6 +76,7 @@ export function toProject(record: ProjectRecord): Project {
     executiveSummary: record.caseStudy.executiveSummary,
     engineeringDecisions: record.caseStudy.engineeringDecisions,
     debuggingScreenshots: record.caseStudy.debugging,
+    demoVideo: record.caseStudy.demoVideo,
     results: record.caseStudy.results,
   };
 }

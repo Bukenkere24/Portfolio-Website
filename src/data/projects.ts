@@ -803,10 +803,11 @@ const projectRecords: ProjectRecord[] = [
     id: "cartpole-qlearning",
     slug: "cartpole-qlearning-agent",
     title: "CartPole Q-Learning Agent",
-    subtitle: "Tabular reinforcement learning with state discretization on Gymnasium CartPole-v1",
+    subtitle:
+      "Tabular reinforcement learning agent that learns to balance a pole on a moving cart using discretized Q-learning",
     description:
-      "Reinforcement learning agent that solves CartPole-v1 using discretized tabular Q-learning, tuned hyperparameters, and automatic gameplay video generation.",
-    tags: ["Reinforcement Learning", "Machine Learning", "Python", "Gymnasium"],
+      "A classic control problem solved with tabular Q-learning. The agent maps continuous CartPole states into discrete bins, learns action values over thousands of episodes, and plays back a trained policy in Gymnasium.",
+    tags: ["Python", "Reinforcement Learning", "Q-Learning", "Gymnasium", "NumPy", "MoviePy"],
     featured: true,
     featuredOrder: 8,
     year: 2026,
@@ -815,11 +816,11 @@ const projectRecords: ProjectRecord[] = [
     links: { github: "https://github.com/Sakaido4u/cartpole-qlearning" },
     caseStudy: {
       executiveSummary:
-        "A reinforcement learning project that solves Gymnasium's CartPole-v1 environment with a discretized tabular Q-learning agent — no neural networks — through careful state binning, epsilon-greedy exploration, and hyperparameter tuning.",
+        "This project trains a tabular Q-learning agent to solve OpenAI Gymnasium's CartPole-v1 environment. CartPole is a classic reinforcement learning benchmark: keep a pole upright by pushing the cart left or right. Instead of a neural network, the agent uses state discretization — continuous observations (cart position, velocity, pole angle, angular velocity) are binned into a finite grid, and a Q-table stores the value of each action in each discrete state. The agent learns through epsilon-greedy exploration over 6,000 episodes, with the best model saved by rolling average performance. After training, the policy was evaluated over 20 episodes and averaged 334.9 return (max 500), showing stable pole balancing with a simple tabular approach.",
       problemStatement:
         "CartPole has a continuous state space (position, velocity, pole angle, angular velocity), so tabular Q-learning cannot be applied directly without a discretization scheme that preserves enough signal to learn a stable balancing policy.",
       solution:
-        "Discretized the four-dimensional state space into tuned bins (10x10x18x18), clipped unbounded velocity dimensions, and trained an epsilon-greedy Q-learning agent over 6000 episodes with decaying exploration, tracking the best policy by 200-episode average return.",
+        "Discretized the four-dimensional state space into tuned bins (10x10x18x18), clipped unbounded velocity dimensions, and trained an epsilon-greedy Q-learning agent over 6,000 episodes with decaying exploration, tracking the best policy by 200-episode average return.",
       architecture: {
         title: "Q-Learning Training Loop",
         description:
@@ -842,12 +843,11 @@ const projectRecords: ProjectRecord[] = [
         ],
       },
       features: [
-        "State discretization for continuous control",
-        "Epsilon-greedy exploration with decay (1.0 to 0.02)",
-        "Tuned hyperparameters: alpha 0.2, gamma 0.99, 6000 episodes",
-        "Best-policy checkpointing by 200-episode average return",
-        "Policy evaluation and performance metrics",
-        "Automatic gameplay video generation",
+        "Discretized continuous state space for tabular Q-learning",
+        "Epsilon-greedy exploration with decay and tuned hyperparameters",
+        "Best checkpoint selected by rolling 200-episode average",
+        "Policy evaluation on held-out episodes",
+        "Gameplay demo rendered automatically from the trained Q-table",
       ],
       technologyStack: ["Python", "NumPy", "Gymnasium", "MoviePy"],
       engineeringDecisions: [
@@ -867,20 +867,21 @@ const projectRecords: ProjectRecord[] = [
             "Tracked the best 200-episode average and saved that Q-table snapshot, so late-training exploration noise never degrades the shipped policy.",
         },
       ],
-      gallery: [
-        galleryPlaceholder("Training Returns", "Episode return curve across 6000 training episodes.", "cartpole-1"),
-        galleryPlaceholder("Balanced Pole", "Trained agent balancing the pole at near-maximum episode return.", "cartpole-2"),
-      ],
-      debugging: [
-        galleryPlaceholder("Bin Tuning", "Comparing return curves across discretization bin configurations.", "cartpole-d1"),
-      ],
+      gallery: [],
+      debugging: [],
+      demoVideo: {
+        src: "/images/projects/cartpole/agent-demo.mp4",
+        alt: "Trained CartPole Q-learning agent balancing the pole",
+        caption:
+          "Trained agent playing CartPole-v1 using the learned Q-table policy (~10s demo).",
+      },
       results: {
         summary:
           "The trained agent consistently achieves near-maximum episode returns, demonstrating stable pole balancing with tabular Q-learning alone.",
         metrics: [
+          { label: "Best 200-Episode Avg", value: 336.6, suffix: " / 500" },
+          { label: "Eval Avg (20 Episodes)", value: 334.9, suffix: " / 500" },
           { label: "Training Episodes", value: 6000 },
-          { label: "Episode Return Cap", value: 500 },
-          { label: "Discount Factor", value: 0.99 },
         ],
       },
       lessonsLearned: [
