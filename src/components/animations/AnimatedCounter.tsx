@@ -5,20 +5,24 @@ interface AnimatedCounterProps {
   value: number;
   prefix?: string;
   suffix?: string;
+  /** Animate without waiting for scroll-into-view (e.g. hero stats above/below fold). */
+  immediate?: boolean;
 }
 
 export function AnimatedCounter({
   value,
   prefix = "",
   suffix = "",
+  immediate = false,
 }: AnimatedCounterProps) {
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const isInView = useInView(ref, { once: true, amount: 0.15 });
+  const shouldAnimate = immediate || isInView;
   const [displayValue, setDisplayValue] = useState(0);
   const reduceMotion = useReducedMotion();
 
   useEffect(() => {
-    if (!isInView) return;
+    if (!shouldAnimate) return;
 
     if (reduceMotion) {
       setDisplayValue(value);
@@ -41,7 +45,14 @@ export function AnimatedCounter({
 
     frameId = requestAnimationFrame(update);
     return () => cancelAnimationFrame(frameId);
-  }, [isInView, reduceMotion, value]);
+  }, [shouldAnimate, reduceMotion, value]);
+
+  useEffect(() => {
+    if (shouldAnimate) return;
+
+    const timeoutId = window.setTimeout(() => setDisplayValue(value), 1500);
+    return () => window.clearTimeout(timeoutId);
+  }, [shouldAnimate, value]);
 
   return (
     <span ref={ref}>

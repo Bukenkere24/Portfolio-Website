@@ -6,6 +6,7 @@ import { SafeImage } from "@/components/common/SafeImage";
 import { HeroReveal } from "@/components/animations/HeroReveal";
 import { Container } from "@/components/layout/Container";
 import { ButtonLink } from "@/components/ui/Button";
+import { usePageMotion } from "@/context/PageMotionContext";
 import { useIsMobile } from "@/hooks/useMediaQuery";
 import { heroContent, heroRoles, heroStats } from "@/data";
 import { isValidImageSrc } from "@/utils/images";
@@ -56,6 +57,7 @@ export function HeroSection() {
   const [parallax, setParallax] = useState({ x: 0, y: 0 });
   const [showScrollIndicator, setShowScrollIndicator] = useState(true);
   const reduceMotion = useReducedMotion();
+  const { isReady } = usePageMotion();
   const isMobile = useIsMobile();
   const particleCount = isMobile ? 6 : 14;
   const hasPortrait = isValidImageSrc(heroContent.portraitSrc);
@@ -203,6 +205,7 @@ export function HeroSection() {
                       value={stat.value}
                       prefix={stat.prefix}
                       suffix={stat.suffix}
+                      immediate={isReady}
                     />
                   }
                 />
