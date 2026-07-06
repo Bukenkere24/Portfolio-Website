@@ -1,9 +1,8 @@
 export type SkillCategory =
   | "languages"
-  | "frameworks"
+  | "libraries"
   | "tools"
-  | "cloud"
-  | "ai";
+  | "other";
 
 export interface Skill {
   name: string;

@@ -9,18 +9,16 @@ import type { SkillCategory } from "@/types";
 
 const categoryLabels: Record<SkillCategory, string> = {
   languages: "Languages",
-  frameworks: "Frameworks",
+  libraries: "Libraries",
   tools: "Tools",
-  cloud: "Cloud & Data",
-  ai: "AI & ML",
+  other: "Other",
 };
 
 const categories: SkillCategory[] = [
   "languages",
-  "frameworks",
+  "libraries",
   "tools",
-  "cloud",
-  "ai",
+  "other",
 ];
 
 export function SkillsSection() {
