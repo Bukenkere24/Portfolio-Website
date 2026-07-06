@@ -1,13 +1,6 @@
 import type { ProjectRecord } from "@/utils/projectAdapter";
 import { toProjects } from "@/utils/projectAdapter";
 
-const galleryPlaceholder = (label: string, caption: string, id: string) => ({
-  id,
-  alt: `${label} project screenshot`,
-  caption,
-  placeholder: label,
-});
-
 const galleryImage = (
   folder: string,
   filename: string,
