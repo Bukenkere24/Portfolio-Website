@@ -164,64 +164,94 @@ const projectRecords: ProjectRecord[] = [
     links: { github: "https://github.com/" },
     caseStudy: {
       executiveSummary:
-        "An enterprise automation project focused on opportunity forecasting inside Salesforce, using declarative workflows and iterative debugging to improve sales process visibility.",
+        "Built an automated Opportunity Forecasting flow in Salesforce during my Agentforce internship at Aedon.Accounting. A record-triggered flow creates forecast records, calculates revenue from stage probability, and updates opportunity fields — validated across Prospecting through Closed Won/Lost test cases.",
       problemStatement:
         "Sales teams lacked reliable forecasting signals and depended on manual updates, making pipeline reviews slow and opportunity prioritization inconsistent.",
       solution:
-        "Designed Salesforce workflows, automation rules, and forecasting logic that surface opportunity health, reduce manual effort, and support better business decisions.",
+        "Designed a record-triggered Salesforce Flow on Opportunity create/update that creates forecast records, retrieves opportunity data, calculates forecasted revenue from amount and stage probability, and writes the result back to the opportunity record.",
       architecture: {
-        title: "Salesforce Automation Flow",
+        title: "Opportunity Forecasting Flow",
         description:
-          "Opportunity data flows through validation, enrichment, forecasting, and dashboard visibility layers.",
+          "Record-triggered automation runs immediately when an Opportunity is created or updated, with five entry conditions before executing the forecast pipeline.",
         nodes: [
-          { id: "crm", label: "CRM Data", description: "Opportunity records" },
-          { id: "rules", label: "Workflow Rules", description: "Declarative automation" },
-          { id: "forecast", label: "Forecast Engine", description: "Prediction logic" },
-          { id: "alerts", label: "Alerts", description: "Exception handling" },
-          { id: "dashboard", label: "Dashboard", description: "Business visibility" },
+          { id: "trigger", label: "Record Trigger", description: "Opportunity create/update" },
+          { id: "create", label: "Create Forecast", description: "New forecast record" },
+          { id: "get", label: "Get Records", description: "Opportunity lookup" },
+          { id: "calc", label: "Calculate Revenue", description: "Amount × probability" },
+          { id: "update", label: "Update Forecast", description: "Write forecast value" },
         ],
         edges: [
-          { from: "crm", to: "rules" },
-          { from: "rules", to: "forecast" },
-          { from: "forecast", to: "alerts" },
-          { from: "forecast", to: "dashboard" },
+          { from: "trigger", to: "create" },
+          { from: "create", to: "get" },
+          { from: "get", to: "calc" },
+          { from: "calc", to: "update" },
         ],
       },
       features: [
-        "Opportunity forecasting automation",
-        "Declarative workflow design",
-        "Business process optimization",
-        "Exception alerts for stale opportunities",
-        "Dashboard-ready sales signals",
+        "Record-triggered flow on Opportunity create and update",
+        "Automated forecast record creation and revenue calculation",
+        "Stage-based probability mapping (Prospecting through Closed Won/Lost)",
+        "Forecasted Revenue field updated on the opportunity record",
+        "Sandbox test validation across four pipeline stages",
       ],
-      technologyStack: ["Salesforce", "Flows", "Apex", "SOQL", "Dashboards"],
+      technologyStack: [
+        "Salesforce Flows",
+        "Salesforce Lightning",
+        "Apex",
+        "Opportunity Object",
+        "Sandbox Testing",
+      ],
       engineeringDecisions: [
         {
-          title: "Declarative-first automation",
+          title: "Record-triggered after-save flow",
           description:
-            "Prioritized Salesforce Flows where possible to keep business logic maintainable for non-engineering stakeholders.",
+            "Used an after-save record-triggered flow optimized for actions and related records so forecast logic runs once opportunity data is committed.",
         },
         {
-          title: "Debug-driven iteration",
+          title: "Declarative probability calculation",
           description:
-            "Used sandbox debugging and workflow tracing to refine forecasting behavior instead of deploying opaque logic changes.",
+            "Kept revenue forecasting in Flow assignment elements (Amount × Probability) so business rules stay visible and maintainable without custom Apex.",
         },
       ],
       gallery: [
-        galleryPlaceholder("Opportunity Board", "Forecasting dashboard with opportunity health indicators.", "sf-1"),
-        galleryPlaceholder("Workflow Builder", "Declarative automation flow for opportunity updates.", "sf-2"),
+        galleryImage(
+          "salesforce",
+          "flow-diagram.png",
+          "Salesforce record-triggered opportunity forecasting flow",
+          "Record-triggered flow: Create Forecast Record → Get Opportunity Records → Calculate Forecasted Revenue → Update Forecast Value.",
+          "sf-1",
+        ),
+        galleryImage(
+          "salesforce",
+          "results-test-cases.png",
+          "Opportunity forecasting test case results",
+          "Four test cases across Prospecting, Negotiation, Closed Won, and Closed Lost — all passed with correct forecasted revenue.",
+          "sf-2",
+        ),
+        galleryImage(
+          "salesforce",
+          "final-test-opportunity.png",
+          "Final test opportunity record with forecasted revenue",
+          "Live opportunity record showing Amount $78,620, 10% Prospecting probability, and Forecasted Revenue $7,862.00.",
+          "sf-3",
+        ),
       ],
       debugging: [
-        galleryPlaceholder("Flow Debugger", "Tracing a failed opportunity state transition in sandbox.", "sf-d1"),
-        galleryPlaceholder("Field Mapping", "Resolving inconsistent custom field mappings during rollout.", "sf-d2"),
+        galleryImage(
+          "salesforce",
+          "results-test-cases.png",
+          "Validating forecast calculations across pipeline stages",
+          "Post-deployment test matrix confirming forecasted revenue matches Amount × Probability for every stage.",
+          "sf-d1",
+        ),
       ],
       results: {
         summary:
-          "Improved forecasting consistency and reduced manual pipeline maintenance for the sales workflow.",
+          "After deploying the flow, four test cases across Prospecting, Negotiation, Closed Won, and Closed Lost all passed with correct forecasted revenue calculations.",
         metrics: [
-          { label: "Manual Updates Reduced", value: 40, suffix: "%" },
-          { label: "Workflow Automations", value: 12 },
-          { label: "Forecast Accuracy Lift", value: 18, suffix: "%" },
+          { label: "Test Cases Passed", value: 4 },
+          { label: "Pass Rate", value: 100, suffix: "%" },
+          { label: "Flow Elements", value: 5 },
         ],
       },
       lessonsLearned: [
