@@ -21,6 +21,25 @@ const galleryImage = (
   caption,
 });
 
+const galleryPages = (
+  folder: string,
+  filenamePrefix: string,
+  pageCount: number,
+  title: string,
+  captionPrefix: string,
+  idPrefix: string,
+) =>
+  Array.from({ length: pageCount }, (_, index) => {
+    const page = index + 1;
+    return galleryImage(
+      folder,
+      `${filenamePrefix}-page-${page}.png`,
+      `${title} page ${page}`,
+      `${captionPrefix} (page ${page} of ${pageCount}).`,
+      `${idPrefix}-${page}`,
+    );
+  });
+
 const projectRecords: ProjectRecord[] = [
   {
     id: "docdb-etl",
@@ -282,62 +301,100 @@ const projectRecords: ProjectRecord[] = [
     links: { github: "https://github.com/" },
     caseStudy: {
       executiveSummary:
-        "A NITTE Hackathon winning system that uses multiple AI agents to generate quantitative problems, validate them, and iteratively improve output quality.",
+        "A NITTE Hackathon winning multi-agent system that generates quantitative aptitude problems with research-driven design rules, dual-solver validation, and automated quality checks — achieving 100% acceptance across a 12-problem test run with full solver agreement.",
       problemStatement:
-        "Generating reliable quantitative practice problems manually is slow, and single-model generation often produces invalid or poorly structured questions.",
+        "Generating reliable quantitative practice problems manually is slow, and single-model generation often produces invalid questions, inconsistent difficulty, or answers that fail independent verification.",
       solution:
-        "Built a multi-agent pipeline where generation, validation, and refinement agents collaborate to produce self-checking problem sets with higher trustworthiness.",
+        "Built a multi-agent pipeline with a Research Agent design-rules engine, generation and validation agents, dual independent solvers (Solver A and Solver B), and a Streamlit reporting layer that surfaces accuracy, domain coverage, difficulty distribution, and per-question validation output.",
       architecture: {
         title: "Multi-Agent Validation Loop",
         description:
-          "Agents operate in a generate-validate-refine cycle until output passes quality checks.",
+          "Agents operate in a generate-validate-refine cycle with design rules, dual solvers, and automated acceptance checks before problems are approved.",
         nodes: [
+          { id: "rules", label: "Design Rules", description: "Domain formulas & constraints" },
           { id: "generator", label: "Generator Agent" },
+          { id: "solverA", label: "Solver A" },
+          { id: "solverB", label: "Solver B" },
           { id: "validator", label: "Validator Agent" },
-          { id: "refiner", label: "Refiner Agent" },
           { id: "output", label: "Approved Output" },
         ],
         edges: [
-          { from: "generator", to: "validator" },
-          { from: "validator", to: "refiner" },
-          { from: "refiner", to: "generator" },
+          { from: "rules", to: "generator" },
+          { from: "generator", to: "solverA" },
+          { from: "generator", to: "solverB" },
+          { from: "solverA", to: "validator" },
+          { from: "solverB", to: "validator" },
           { from: "validator", to: "output" },
         ],
       },
       features: [
-        "Multi-agent orchestration",
-        "Self-validation loops",
-        "Quant problem generation",
-        "Quality scoring and rejection",
-        "Hackathon-ready rapid iteration",
+        "Research Agent design rules across quant domains",
+        "Dual-solver independent verification (Solver A & B)",
+        "Automated difficulty classification and distribution tracking",
+        "Domain-level accuracy reporting with acceptance rate metrics",
+        "Detailed per-question validation and solver agreement reports",
       ],
-      technologyStack: ["Python", "LLM APIs", "FastAPI", "Pydantic", "Multi-Agent Orchestration"],
+      technologyStack: [
+        "Python",
+        "Streamlit",
+        "LLM APIs",
+        "Multi-Agent Orchestration",
+        "Pydantic",
+        "JSON Schema",
+      ],
       engineeringDecisions: [
         {
-          title: "Validation as a separate agent",
+          title: "Design rules as structured JSON",
           description:
-            "Split generation and validation into distinct roles to reduce model self-bias and improve output reliability.",
+            "Encoded domain formulas, MCQ distractor rules, and impossible conditions in a Design Rules Viewer so generation stays consistent across Time/Speed/Distance, Work & Time, Pipes & Cisterns, and other quant domains.",
         },
         {
-          title: "Iterative refinement over one-shot generation",
+          title: "Dual-solver agreement gate",
           description:
-            "Chose a loop-based architecture so weak outputs could be corrected instead of discarded entirely.",
+            "Required Solver A and Solver B to agree before marking a problem valid, eliminating single-model self-bias and catching calculation mismatches early.",
         },
       ],
       gallery: [
-        galleryPlaceholder("Agent Orchestration", "Multi-agent workflow diagram from the hackathon build.", "quant-1"),
-        galleryPlaceholder("Problem Output", "Validated quantitative problem set with quality flags.", "quant-2"),
+        galleryImage(
+          "quant",
+          "accuracy-report.png",
+          "Quant generator accuracy report dashboard",
+          "Accuracy Report: 12 generated, 12 valid, 100% acceptance rate with per-domain accuracy breakdown.",
+          "quant-accuracy",
+        ),
+        galleryImage(
+          "quant",
+          "difficulty-solver-agreement.png",
+          "Difficulty distribution and solver agreement metrics",
+          "Difficulty distribution (2 easy, 7 medium, 3 hard) and solver agreement (12 matches, 0 mismatches).",
+          "quant-difficulty",
+        ),
+        ...galleryPages(
+          "quant",
+          "design-rules-viewer",
+          18,
+          "Design Rules Viewer",
+          "Research Agent design rules JSON covering quant domains, formula sets, and MCQ distractor constraints",
+          "quant-rules",
+        ),
       ],
       debugging: [
-        galleryPlaceholder("Validator Failures", "Inspecting false positives from the validator agent.", "quant-d1"),
+        ...galleryPages(
+          "quant",
+          "detailed-report",
+          4,
+          "Detailed validation report",
+          "Per-question solver output with match_A, match_B, and final_validation status",
+          "quant-detail",
+        ),
       ],
       results: {
         summary:
-          "Won 1st place at NITTE Hackathon by combining fast execution with a credible self-validating AI architecture.",
+          "Test run produced 12 valid problems with 100% acceptance, full dual-solver agreement, and balanced difficulty distribution across multiple quant domains.",
         metrics: [
-          { label: "Hackathon Placement", value: 1, suffix: "st" },
-          { label: "Validation Pass Rate", value: 87, suffix: "%" },
-          { label: "Agents Orchestrated", value: 3 },
+          { label: "Acceptance Rate", value: 100, suffix: "%" },
+          { label: "Solver Agreement", value: 12 },
+          { label: "Problems Validated", value: 12 },
         ],
       },
       lessonsLearned: [
