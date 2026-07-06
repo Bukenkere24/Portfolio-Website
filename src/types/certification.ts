@@ -4,4 +4,5 @@ export interface Certification {
   issuer: string;
   date: string;
   credentialUrl?: string;
+  image?: string;
 }
