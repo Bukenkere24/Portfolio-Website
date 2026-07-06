@@ -4,7 +4,7 @@ import { FadeIn } from "@/components/animations/FadeIn";
 import { Badge } from "@/components/common/Badge";
 import { Container } from "@/components/layout/Container";
 import { ButtonLink } from "@/components/ui/Button";
-import { getProjectBadgeIntent, getProjectDemo, getProjectGithub } from "@/utils/projects";
+import { getProjectDemo, getProjectGithub, getUniqueProjectBadgeIntents } from "@/utils/projects";
 import type { Project } from "@/types";
 import { cn } from "@/utils/cn";
 
@@ -22,6 +22,7 @@ interface CaseStudyHeroProps {
 export function CaseStudyHero({ project }: CaseStudyHeroProps) {
   const github = getProjectGithub(project);
   const demo = getProjectDemo(project);
+  const badgeIntents = getUniqueProjectBadgeIntents(project.badges, project.status);
 
   return (
     <section className="relative overflow-hidden border-b border-white/5 py-24 md:py-32">
@@ -47,10 +48,9 @@ export function CaseStudyHero({ project }: CaseStudyHeroProps) {
         <FadeIn delay={0.08}>
           <div className="mt-8 flex flex-wrap gap-2">
             {project.featured && <Badge intent="featured" />}
-            {project.badges?.map((badge) => (
-              <Badge key={badge} intent={getProjectBadgeIntent(badge)} />
+            {badgeIntents.map((intent) => (
+              <Badge key={intent} intent={intent} />
             ))}
-            {project.status === "in-progress" && <Badge intent="ongoing" />}
             <Badge>{project.year}</Badge>
             <Badge intent="default">{project.category}</Badge>
           </div>

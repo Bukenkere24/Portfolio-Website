@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import { Badge } from "@/components/common/Badge";
 import { Card } from "@/components/common/Card";
 import { TechBadge } from "@/components/common/TechBadge";
-import { getProjectBadgeIntent } from "@/utils/projects";
+import { getUniqueProjectBadgeIntents } from "@/utils/projects";
+import { dedupeTagsByDisplay } from "@/constants/badges";
 import type { Project, ProjectAccent } from "@/types";
 import { cn } from "@/utils/cn";
 
@@ -20,7 +21,8 @@ interface ProjectCardProps {
 }
 
 export const ProjectCard = memo(function ProjectCard({ project }: ProjectCardProps) {
-  const tags = project.tags ?? [project.category];
+  const tags = dedupeTagsByDisplay(project.tags ?? [project.category], 4);
+  const badgeIntents = getUniqueProjectBadgeIntents(project.badges, project.status);
 
   return (
     <Card hover className="group relative overflow-hidden">
@@ -35,10 +37,9 @@ export const ProjectCard = memo(function ProjectCard({ project }: ProjectCardPro
       <div className="relative flex h-full flex-col">
         <div className="flex flex-wrap items-center gap-2">
           {project.featured && <Badge intent="featured" />}
-          {project.badges?.map((badge) => (
-            <Badge key={badge} intent={getProjectBadgeIntent(badge)} />
+          {badgeIntents.map((intent) => (
+            <Badge key={intent} intent={intent} />
           ))}
-          {project.status === "in-progress" && <Badge intent="ongoing" />}
         </div>
 
         <h3 className="mt-5 text-2xl font-semibold tracking-tight">{project.title}</h3>
@@ -47,7 +48,7 @@ export const ProjectCard = memo(function ProjectCard({ project }: ProjectCardPro
         </p>
 
         <div className="mt-5 flex flex-wrap gap-2">
-          {tags.slice(0, 4).map((tag) => (
+          {tags.map((tag) => (
             <TechBadge key={tag} label={tag} />
           ))}
         </div>

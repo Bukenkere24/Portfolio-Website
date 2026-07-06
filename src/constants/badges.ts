@@ -28,6 +28,8 @@ export const projectBadgeToIntent: Record<ProjectBadge, BadgeIntent> = {
   "anveshan-sponsorship": "client-project",
 };
 
+const semanticIntents: BadgeIntent[] = ["ai", "ml", "enterprise"];
+
 export function getTechBadgeIntent(label: string): BadgeIntent {
   const normalized = label.toLowerCase();
 
@@ -52,4 +54,24 @@ export function getTechBadgeIntent(label: string): BadgeIntent {
   }
 
   return "default";
+}
+
+export function getTechBadgeDisplayKey(label: string): string {
+  const intent = getTechBadgeIntent(label);
+  return semanticIntents.includes(intent) ? intent : label.toLowerCase();
+}
+
+export function dedupeTagsByDisplay(tags: string[], limit = 4): string[] {
+  const seen = new Set<string>();
+  const unique: string[] = [];
+
+  for (const tag of tags) {
+    const key = getTechBadgeDisplayKey(tag);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    unique.push(tag);
+    if (unique.length >= limit) break;
+  }
+
+  return unique;
 }

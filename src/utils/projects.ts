@@ -1,7 +1,7 @@
 import { projects } from "@/data/projects";
 import { badgeLabels, projectBadgeToIntent } from "@/constants/badges";
 import type { BadgeIntent } from "@/constants/badges";
-import type { Project, ProjectBadge } from "@/types";
+import type { Project, ProjectBadge, ProjectStatus } from "@/types";
 import { isValidExternalUrl } from "@/utils/links";
 
 export function getFeaturedProjects(): Project[] {
@@ -34,4 +34,25 @@ export function getProjectBadgeIntent(badge: ProjectBadge): BadgeIntent {
 
 export function getProjectBadgeLabel(badge: ProjectBadge): string {
   return badgeLabels[projectBadgeToIntent[badge]];
+}
+
+export function getUniqueProjectBadgeIntents(
+  badges: ProjectBadge[] | undefined,
+  status: ProjectStatus,
+): BadgeIntent[] {
+  const seen = new Set<BadgeIntent>();
+  const intents: BadgeIntent[] = [];
+
+  for (const badge of badges ?? []) {
+    const intent = getProjectBadgeIntent(badge);
+    if (seen.has(intent)) continue;
+    seen.add(intent);
+    intents.push(intent);
+  }
+
+  if (status === "in-progress" && !seen.has("ongoing")) {
+    intents.push("ongoing");
+  }
+
+  return intents;
 }
