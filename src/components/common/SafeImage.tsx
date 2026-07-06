@@ -10,6 +10,7 @@ interface SafeImageProps {
   placeholder?: string;
   loading?: "lazy" | "eager";
   rounded?: boolean;
+  fit?: "cover" | "contain";
 }
 
 export function SafeImage({
@@ -19,6 +20,7 @@ export function SafeImage({
   placeholder,
   loading = "lazy",
   rounded = true,
+  fit = "cover",
 }: SafeImageProps) {
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(isValidImageSrc(src));
@@ -48,7 +50,13 @@ export function SafeImage({
   }
 
   return (
-    <div className={cn("relative h-full w-full overflow-hidden", rounded && "rounded-image")}>
+    <div
+      className={cn(
+        "relative flex h-full w-full items-center justify-center overflow-hidden",
+        fit === "contain" && "bg-black/25",
+        rounded && "rounded-image",
+      )}
+    >
       {isLoading && (
         <Skeleton className="absolute inset-0 rounded-image" aria-hidden />
       )}
@@ -58,7 +66,10 @@ export function SafeImage({
         loading={loading}
         decoding="async"
         className={cn(
-          "h-full w-full object-cover transition-opacity duration-300",
+          "transition-opacity duration-300",
+          fit === "contain"
+            ? "max-h-full max-w-full object-contain"
+            : "h-full w-full object-cover",
           isLoading ? "opacity-0" : "opacity-100",
           className,
         )}

@@ -70,12 +70,13 @@ export function ProjectGallery({ items, title = "Gallery" }: ProjectGalleryProps
               data-cursor-hover
             >
               <Card hover className="overflow-hidden">
-                <div className="aspect-[16/10] overflow-hidden">
+                <div className="flex aspect-[16/10] items-center justify-center overflow-hidden bg-white/[0.02] p-2">
                   <SafeImage
                     src={item.src}
                     alt={item.alt}
                     placeholder={item.placeholder}
-                    className="transition duration-500 group-hover:scale-[1.03]"
+                    fit="contain"
+                    rounded={false}
                   />
                 </div>
                 <div className="flex items-start justify-between gap-3 p-4">
@@ -143,7 +144,7 @@ export function ProjectGallery({ items, title = "Gallery" }: ProjectGalleryProps
             </button>
 
             <div className="flex w-full max-w-6xl flex-col gap-4">
-              <div className="overflow-hidden rounded-project border border-white/10 bg-surface">
+              <div className="flex max-h-[80vh] min-h-[320px] items-center justify-center overflow-hidden rounded-project border border-white/10 bg-black/40 p-4">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={items[activeIndex].id}
@@ -151,12 +152,16 @@ export function ProjectGallery({ items, title = "Gallery" }: ProjectGalleryProps
                     animate={{ opacity: 1, scale: zoom }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: reduceMotion ? 0 : 0.25 }}
-                    className="aspect-[16/10] origin-center"
+                    className="flex h-full max-h-[72vh] w-full items-center justify-center origin-center"
                   >
                     <SafeImage
                       src={items[activeIndex].src}
                       alt={items[activeIndex].alt}
                       placeholder={items[activeIndex].placeholder}
+                      fit="contain"
+                      rounded={false}
+                      loading="eager"
+                      className="max-h-[72vh]"
                     />
                   </motion.div>
                 </AnimatePresence>
